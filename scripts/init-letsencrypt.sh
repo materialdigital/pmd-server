@@ -90,3 +90,6 @@ echo
 
 echo "### Reloading nginx ..."
 docker-compose exec nginx nginx -s reload
+
+echo "### Starting certbot for automated certificate renewal ..."
+docker-compose up -d certbot
