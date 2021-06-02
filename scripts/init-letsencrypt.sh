@@ -1,15 +1,27 @@
 #!/bin/bash
+set -e
+
+# Script parameters -------------------------------------------------------------
+
+domains=(example.com)
+rsa_key_size=4096
+data_path="./data/certbot"
+email="info@example.com" # Adding a valid address is strongly recommended
+staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
+
+
+# Script - Do not change content below unless you know what you are doing -------
+
+if [ $domains == "example.com" ]; then
+  echo 'Error: Please set a custom domain in the top section if this script.' >&2
+  exit 1
+fi
+
 
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Error: docker-compose is not installed.' >&2
   exit 1
 fi
-
-domains=(kit-pmd-2.ydns.eu)
-rsa_key_size=4096
-data_path="./data/certbot"
-email="admin@kit-pmd-2.ydns.eu" # Adding a valid address is strongly recommended
-staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
