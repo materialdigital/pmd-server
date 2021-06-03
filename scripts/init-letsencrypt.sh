@@ -13,7 +13,7 @@ staging=0 # Set to 1 if you're testing your setup to avoid hitting request limit
 # Script - Do not change content below unless you know what you are doing -------
 
 if [ $domains == "example.com" ]; then
-  echo 'Error: Please set a custom domain in the top section if this script.' >&2
+  echo 'Error: Please set a custom domain in the top section of this script.' >&2
   exit 1
 fi
 
