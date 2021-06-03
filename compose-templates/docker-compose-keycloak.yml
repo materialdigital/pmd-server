@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  keycloak-db:
+      image: postgres:12
+      volumes:
+        - keycloak_postgres:/var/lib/postgresql/data
+      env_file:
+        - keycloak_db.env
+      networks:
+        - internal
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:latest
+      env_file:
+        - keycloak.env
+      depends_on:
+        - postgres
+      networks:
+        - internal
+        - pmd-server_nginx-net
+
+
+volumes:
+  keycloak_postgres:
+      driver: local
+
+
+networks:
+  internal:
+    driver: bridge
+  pmd-server_nginx-net:
+    external: true
