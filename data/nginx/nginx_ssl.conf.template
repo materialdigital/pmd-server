@@ -1,0 +1,27 @@
+server {
+    listen 80;
+    server_name *;
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    listen 443 ssl;
+    server_name *;
+    
+    include ssl.incl;
+
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+
+    ssl_certificate     /run/secrets/cert.pem;
+    ssl_certificate_key /run/secrets/key.pem;
+    ssl_dhparam         /run/secrets/dhparam.pem;
+
+    location / {
+        proxy_pass https://keycloak:8443;
+        proxy_set_header Host      $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
