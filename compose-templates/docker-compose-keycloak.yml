@@ -15,7 +15,7 @@ services:
       env_file:
         - keycloak.env
       depends_on:
-        - postgres
+        - keycloak-db
       networks:
         - internal
         - pmd-server_nginx-net

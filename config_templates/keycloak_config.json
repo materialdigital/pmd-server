@@ -1,0 +1,22 @@
+{
+  "shared": {
+    "db_password": "[db password]",
+    "db_name": "keycloak",
+    "db_user": "keycloak"
+  },
+  "keycloak.env": {
+    "DB_VENDOR": "POSTGRES",
+    "DB_ADDR": "keycloak_db",
+    "DB_DATABASE": "shared:db_name",
+    "DB_USER": "shared:db_user",
+    "DB_SCHEMA": "public",
+    "DB_PASSWORD": "shared:db_password",
+    "KEYCLOAK_USER": "admin",
+    "KEYCLOAK_PASSWORD": "[password]"
+  },
+  "keycloak_db.env": {
+    "POSTGRES_DB": "shared:db_name",
+    "POSTGRES_USER": "shared:db_user",
+    "POSTGRES_PASSWORD": "shared:db_password"
+  }
+}
