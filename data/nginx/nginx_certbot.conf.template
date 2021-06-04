@@ -8,3 +8,25 @@ server {
         return 301 https://$host$request_uri;
     }
 }
+
+server {
+    listen 443 ssl;
+    server_name pmd-app.mydomain.de;
+
+    ssl_certificate /etc/letsencrypt/live/[URL]/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page  404              /404.html;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
