@@ -5,6 +5,9 @@ title: 'Onto-Docker'
 Onto-Docker
 ===
 
+
+[![hackmd-github-sync-badge](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ/badge)](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ)
+
 [<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/rJKjpvmc_)
 
 
@@ -33,7 +36,7 @@ cp docker-compose-prod.yml docker-compose.yml
 ```
 
 ### 3. Connect to SSO Identity Provider (IDP)
-In order to connect Onto-Docker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Generate an Initial Access Token" under [User Management](https://hackmd.io/@materialdigital/SJa76P7cO))
+In order to connect Onto-Docker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
 
 ```bash=+
