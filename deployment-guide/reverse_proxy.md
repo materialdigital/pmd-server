@@ -5,18 +5,25 @@ title: 'Reverse Proxy'
 Reverse Proxy (nginx)
 ===
 
+
+[![hackmd-github-sync-badge](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA/badge)](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA)
+
+
+[<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/HJwVOfQ5_)
+## Table of Contents
+
 [TOC]
 
 The reverse proxy provides a single entrypoint and optionally TLS encryption for all externally exposed web interfaces.
 
-## Choosing and starting a reverxe proxy configuration
+## Choosing and starting a reverse proxy configuration
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
-* I. Simple reverse proxy - no SSL (test environments)
+* I. Simple reverse proxy&mdash;no SSL (test environments)
 * II. Reverse proxy with automtically generated Let's Encrypt certificates (Recommended)
 * III. Reverse proxy with independently retrieved certificates
 
 
-### I. Simple reverse proxy - no SSL
+### I. Simple reverse proxy &mdash; no SSL
 This reverse proxy provides a quick entrypoint for local test setups.
 
 You can start out by copying the compose example into your main working directory.
@@ -24,6 +31,8 @@ You can start out by copying the compose example into your main working director
 ```bash=
 # copy the proxy configuratiion
 cp compose-templates/docker-compose-nginx.yml docker-compose.yml
+# Add a default configuration
+cp data/nginx/local.conf.template data/nginx/local.conf
 ```
 
 You should than have a `docker-compose.yml` file with the following contents:
@@ -45,12 +54,16 @@ networks:
     driver: bridge
 ```
 
-This is everything, that is required. You can start start the reverse proxy using `docker-compose`:
+This is all that is required. You can start the reverse proxy using `docker-compose`:
 ```bash=
 docker-compose up -d
 # Check whether the service started properly
 docker-compose ps
 ```
+
+You should now be able to see the default landing page of the reverse proxy.
+
+![reverse_proxy_local](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/reverse_proxy_local.png?raw=true)
 
 ---
 
@@ -58,13 +71,13 @@ docker-compose ps
 In order to add TLS encryption, you can use automatically generated certificats from [Let's Encrypt](https://letsencrypt.org).
 
 **Requirements**
-* Port 80 needs to be accessible from the internet 
-* The nginx configuration needs to be refreshed periodically to load new certificats
+* Port 80 needs to be accessible from the internet. 
+* The nginx configuration needs to be refreshed periodically to load new certificates.
 
 
 **Benefits**
-* Automated generation of valid certificates
-* Automated renewal of certificates
+* automated generation of valid certificates
+* automated renewal of certificates
 
 For this setup slight modifications of the simple compose setup are required:
 1. Adjusted `command` of the nginx service to ensure new/renewed certificates are automaically loaded
@@ -125,11 +138,13 @@ staging=0 # Set to 1 if you're testing your setup to avoid hitting request limit
 # Script - Do not change content below unless you know what you are doing -------
 ...
 ```
-Open it in an editor and enter the domain name for which the certificate should be issued and an e-mail address for renewal reminders in case certbot fails to renew the cerificate.
+Open it in an editor and enter the domain name for which the certificate should be issued and an e-mail address for renewal reminders in case certbot fails to renew the certificate.
+
 
 ```bash=
 # open the letsencrypt script in your editor
 vi scripts/init-letsencrypt.sh
+
 
 # run the script 
 bash scripts/init-letsencrypt.sh
@@ -146,6 +161,42 @@ $ docker-compose ps
 pmd-core_certbot_1   /bin/sh -c trap exit TERM; ...   Up      443/tcp, 80/tcp
 pmd-core_nginx_1     /docker-entrypoint.sh /bin ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp
 ```
+#### Test your certificate
+If you would like to test whether the certificate is working properly, you can uncomment the server block listening to port 443 in `data/nginx/site.conf` and adjust the path to the certificate and key
+
+```
+server {
+    listen 443 ssl;
+    server_name pmd-app.mydomain.de;
+
+    ssl_certificate /etc/letsencrypt/live/[URL]/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page  404              /404.html;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+```
+Just replace the `[URL]` part with the domain for which you requested the certificate and load the updated configuration:
+
+```bash=
+# Test the new configuration
+docker-compose exec nginx nginx -t
+
+# Reload nginx
+docker-compose exec nginx nginx -s reload
+```
+
 
 ---
 
@@ -207,7 +258,7 @@ services:
   pmd-app:
     image: pmd-app:latest
 ```
-You only need to connect your service to the network of the reverse proxy by extending th compose file as follows:
+You only need to connect your service to the network of the reverse proxy by extending the compose file as follows:
 ```yml
 version: '3.2'
 services:
@@ -239,6 +290,7 @@ docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d pm
 ```
 After the certificate has been created you can add the nginx configuration of the service to `data/nginx/pmd-app.conf`:
 
+
 ```
 # pmd-app.conf:
 
@@ -257,6 +309,7 @@ server {
 }
 ```
 
+
 Finally the new configuration just needs to be loaded by nginx to handle requests to the new service. If the reverse proxy is used for other services as well, it is however advisable to test the new configuration before reloading nginx.
 
 ```bash=
@@ -266,5 +319,7 @@ docker-compose exec nginx nginx -t
 # Reload nginx
 docker-compose exec nginx nginx -s reload
 ```
+
+[Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/SJa76P7cO)
 
 ###### tags: `PMD Deployment guide`
