@@ -12,7 +12,7 @@ services:
       - ./data/certbot/www:/var/www/certbot
     networks:
       - internal
-      - nginx-net
+      - proxy-net
   certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
@@ -25,5 +25,6 @@ services:
 networks:
   internal:
     driver: bridge
-  nginx-net:
+  proxy-net:
+    name: pmd-reverse-proxy-net
     driver: bridge

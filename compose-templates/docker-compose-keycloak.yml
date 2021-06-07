@@ -18,7 +18,7 @@ services:
         - keycloak-db
       networks:
         - internal
-        - pmd-server_nginx-net
+        - proxy-net
 
 
 volumes:
@@ -29,5 +29,6 @@ volumes:
 networks:
   internal:
     driver: bridge
-  pmd-server_nginx-net:
+  proxy-net:
+    name: pmd-reverse-proxy-net
     external: true
