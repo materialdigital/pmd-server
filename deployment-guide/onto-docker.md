@@ -1,8 +1,8 @@
 ---
-title: 'Onto-Docker'
+title: 'OntoDocker'
 ---
 
-Onto-Docker
+OntoDocker
 ===
 
 
@@ -16,6 +16,14 @@ Onto-Docker
 
 [TOC]
 
+## Description
+
+OntoDocker is a Flask application-prototype to access a Blazegraph instance via a GUI and an API.
+
+- Accessible at https://ontodocker.material-digital.de/
+- API authentication via JWT and OIDC.
+  - Allowed Content-Types to upload are "text/turtle" and "application/rdf+xml" as .ttl/.rdf files
+
 ## Setup
 ### Requirements
 * working directory is base directory of the PMD-Server repo as described under [PMD-S Core](https://hackmd.io/@materialdigital/HJwVOfQ5_)
@@ -24,8 +32,8 @@ Onto-Docker
 ### 1. Clone the repository
 
 ```bash=
-git clone https://git.material-digital.de/apps/onto-docker.git
-cd onto-docker
+git clone https://git.materialdigital.de/apps/ontodocker.git
+cd ontodocker
 ```
 
 ### 2. Copy compose template 
@@ -36,7 +44,7 @@ cp docker-compose-prod.yml docker-compose.yml
 ```
 
 ### 3. Connect to SSO Identity Provider (IDP)
-In order to connect Onto-Docker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
+In order to connect OntoDocker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
 
 ```bash=+
@@ -47,8 +55,8 @@ docker-compose build
 docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-register --initial-access-token [TOKEN] https://[SSO_URL]/auth/realms/[SSO_REALM] [ONTODOCKER_URL]
 ```
 
-### 4. Start onto-docker 
-After successful configuration of the SSO you can start onto-docker:
+### 4. Start OntoDocker 
+After successful configuration of the SSO you can start OntoDocker:
 
 ```bash=+
 # Start onto-docker after rebuild to ensure `client_secret.json` is added to the image
@@ -66,7 +74,7 @@ This example assumes you chose the reverse proxy with certbot.
 #### Add nginx configuration
 
 ```bash=+
-# save ontodocker URL to shell variable
+# save OntoDocker URL to shell variable
 # ! Replace "ontodocker.domain.de" with the actual URL for the service
 export ONTODOCKER_URL=ontodocker.domain.de
 
@@ -74,7 +82,7 @@ export ONTODOCKER_URL=ontodocker.domain.de
 cd ..
 
 # add the nginx configuration from the template 
-sed "s/\[URL\]/${ONTODOCKER_URL}/" onto-docker/nginx/prod.conf > data/nginx/ontodocker.conf
+sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx/prod.conf > data/nginx/ontodocker.conf
 ```
 
 #### Retrieve Let's Encrypt certificate
@@ -95,10 +103,18 @@ docker-compose exec nginx nginx -s reload
 
 ### 6. Test Installation
 
-Open you browser and navigate to the URL of your ontodocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication see the ontodocker landing page:
+Open you browser and navigate to the URL of your OntoDocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication see the OntoDocker landing page:
 
 ![](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/ontodocker.png?raw=true)
 
+## Usage
+
+Refer to [`api_usage_examples.py`](https://git.material-digital.de/apps/ontodocker/-/blob/master/api_usage_examples.py) for examples on how to use the API.
+
+
+Graph visualization via WebVOWL 1.1.7
+
+If the visualization doesn't load, clear the browsers cache and refresh the page.
 
 ## Appendix and FAQ
 
