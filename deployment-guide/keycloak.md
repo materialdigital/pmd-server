@@ -5,6 +5,9 @@ title: 'Keycloak'
 Local SSO instance (Keycloak)
 ===
 
+
+[![hackmd-github-sync-badge](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw/badge)](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw)
+
 [<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/H1t3_GQ9O)
 
 ## Table of Contents
@@ -24,16 +27,18 @@ You can setup your own keycloak instance using the provided templates from the [
 # create separate directory 
 mkdir keycloak
 
-# copy the compose and config templates
+# copy the compose templates
 cp compose-templates/docker-compose-keycloak.yml keycloak/docker-compose.yml
-cp config-templates/keycloak_config.json keycloak/
+# generate random passwords and insert them into the template config 
+PASS_STR="$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-128}")"
+sed -e "s/\[password\]/${PASS_STR:0:64}/" -e "s/\[db password\]/${PASS_STR:64}/" config-templates/keycloak_config.json > keycloak/config.json
 
 # change into Keycloak direcory
 cd keycloak
 ```
 
 ### 2. Configure the service
-After copying the templates you should view and adjust the configuration (`config.json`):
+After copying the templates you should view and if necessary adjust the configuration (`config.json`):
 ```json
 {
   "shared": {
@@ -43,7 +48,7 @@ After copying the templates you should view and adjust the configuration (`confi
   },
   "keycloak.env": {
     "DB_VENDOR": "POSTGRES",
-    "DB_ADDR": "keycloak_db",
+    "DB_ADDR": "keycloak-db",
     "DB_DATABASE": "shared:db_name",
     "DB_USER": "shared:db_user",
     "DB_SCHEMA": "public",
@@ -58,9 +63,16 @@ After copying the templates you should view and adjust the configuration (`confi
   }
 }
 ```
-Make sure to set custom passwords for the database and the Keycloak admin user by replacing `[db password]` and `[password]` before you continue and start the service.
+Make sure to to verify that custom passwords have been inserted for the database and the Keycloak admin user (`[db password]` and `[password]`) before you continue and start the service.
 
 ### 3. Start the service
+:::info
+**Note:** In case your python version is not >=3.5, you can also run the `configure.py` script within a docker container:
+```
+docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py
+```
+:::
+
 ```bash=+
 # create environment files from config
 python ../scripts/configure.py
@@ -70,6 +82,7 @@ docker-compose up -d
 # check if the service is up and running
 docker-compose ps
 ```
+
 
 ### 4. Make the service available by adding it to the reverse proxy
 Finally, you just need to add the service to the reverse proxy to make it available. 
@@ -90,10 +103,14 @@ docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d [K
 
 After the certificate has been created you can add the nginx configuration:
 ```bash=+
-# copy the nginx template
-cp data/nginx/keycloak.conf.template data/nginx/keycloak.conf
+# save KeyCloak URL to shell variable
+# ! Replace "sso.domain.de" with the actual URL for the service
+export KEYCLOAK_URL=sso.domain.de
 
-# Ajust the template 
+# add the nginx configuration from the template 
+sed "s/\[URL\]/${KEYCLOAK_URL}/" data/nginx/keycloak.conf.template > data/nginx/keycloak.conf
+
+# Check and ajust the template if necessary
 vi data/nginx/keycloak.conf
 ```
 
