@@ -6,7 +6,7 @@
   },
   "keycloak.env": {
     "DB_VENDOR": "POSTGRES",
-    "DB_ADDR": "keycloak_db",
+    "DB_ADDR": "keycloak-db",
     "DB_DATABASE": "shared:db_name",
     "DB_USER": "shared:db_user",
     "DB_SCHEMA": "public",
