@@ -5,18 +5,24 @@ title: 'Reverse Proxy'
 Reverse Proxy (nginx)
 ===
 
-
 [![hackmd-github-sync-badge](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA/badge)](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA)
 
 
 [<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/HJwVOfQ5_)
+
 ## Table of Contents
 
 [TOC]
 
 The reverse proxy provides a single entrypoint and optionally TLS encryption for all externally exposed web interfaces.
 
+
 ## Choosing and starting a reverse proxy configuration
+
+### Requirements
+
+Make sure You've checked out the repository as detailed in [PMD-S Core Components](https://hackmd.io/@materialdigital/HJwVOfQ5_)
+
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
 * I. Simple reverse proxy&mdash;no SSL (test environments)
 * II. Reverse proxy with automtically generated Let's Encrypt certificates (Recommended)
@@ -47,10 +53,11 @@ services:
     volumes:
       - ./data/nginx:/etc/nginx/conf.d
     networks:
-      - nginx-net
+      - proxy-net
       
 networks:
-  nginx-net:
+  proxy-net:
+    name: pmd-reverse-proxy-net
     driver: bridge
 ```
 
@@ -117,7 +124,12 @@ services:
 In order to serve requests for the Let's encrypt challenge, you need a simple nginx configuration
 
 ```bash=
-cp data/nginx/nginx_certbot.conf.template data/nginx/site.conf
+# save Server URL to shell variable
+# ! Replace "pmd-s.domain.de" with the actual URL for the service
+export PMD_URL=pmd-s.domain.de
+
+# add the nginx configuration from the template 
+sed "s/\[URL\]/${PMD_URL}/" data/nginx/nginx_certbot.conf.template > data/nginx/site.conf
 ```
 
 Next you need to adjust the configuration in the `init-letsencrypt.sh` script:
@@ -162,17 +174,17 @@ pmd-core_certbot_1   /bin/sh -c trap exit TERM; ...   Up      443/tcp, 80/tcp
 pmd-core_nginx_1     /docker-entrypoint.sh /bin ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp
 ```
 #### Test your certificate
-If you would like to test whether the certificate is working properly, you can uncomment the server block listening to port 443 in `data/nginx/site.conf` and adjust the path to the certificate and key
+If you would like to test whether the certificate is working properly, you can uncomment the server block listening to port 443 in `data/nginx/site.conf`:
 
 ```
 server {
     listen 443 ssl;
-    server_name pmd-app.mydomain.de;
+    server_name [URL];
 
     ssl_certificate /etc/letsencrypt/live/[URL]/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
         root   /usr/share/nginx/html;
@@ -250,6 +262,9 @@ docker-compose ps
 
 
 ## Connecting services to the running reverse proxy
+:::warning
+**Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section. 
+:::
 
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:
 ```yml
@@ -259,23 +274,20 @@ services:
     image: pmd-app:latest
 ```
 You only need to connect your service to the network of the reverse proxy by extending the compose file as follows:
-```yml
+```yaml
 version: '3.2'
 services:
   pmd-app:
     image: pmd-app:latest
-  networks:
-    - pmd-server_nginx-net
-
+    networks:
+      - proxy-net
 
 networks:
-  pmd-server_nginx-net:
+  proxy-net:
+    name: pmd-reverse-proxy-net
     external: true
 ```
 
-:::info
-**Note:** the network name of the reverse proxy is constructed with the schema `[directory_name]_[service_name]`. So if the compose file of your reverse proxy resides in a folder with a name other than `pmd-server` you will have to adjust the name of the network accordingly. (You can list the available networks with `docker network ls`)
-:::
 
 Once you have adjusted the compose file bring up the service using docker compose:
 ```bash=
