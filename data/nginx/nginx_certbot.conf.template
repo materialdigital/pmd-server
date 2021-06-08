@@ -11,7 +11,7 @@ server {
 
 # server {
 #     listen 443 ssl;
-#     server_name pmd-app.mydomain.de;
+#     server_name [URL];
 # 
 #     ssl_certificate /etc/letsencrypt/live/[URL]/fullchain.pem;
 #     ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
