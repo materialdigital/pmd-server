@@ -6,7 +6,10 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
+    
+    proxy_buffers         8 16k;
+    proxy_buffer_size     16k;
+    
     location / {
         proxy_pass https://keycloak:8443;
         proxy_set_header Host      $host;
