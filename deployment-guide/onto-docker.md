@@ -32,7 +32,7 @@ OntoDocker is a Flask application-prototype to access a Blazegraph instance via 
 ### 1. Clone the repository
 
 ```bash=
-git clone https://git.materialdigital.de/apps/ontodocker.git
+git clone https://git.material-digital.de/apps/ontodocker.git
 cd ontodocker
 ```
 
@@ -68,7 +68,7 @@ docker-compose ps
 
 ### 5. Connect onto-docker to the reverse proxy
 :::warning
-This example assumes you chose the reverse proxy with certbot.
+**Note:** This example assumes you chose the reverse proxy with certbot.
 :::
 
 #### Add nginx configuration
@@ -103,7 +103,7 @@ docker-compose exec nginx nginx -s reload
 
 ### 6. Test Installation
 
-Open you browser and navigate to the URL of your OntoDocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication see the OntoDocker landing page:
+Open your browser and navigate to the URL of your OntoDocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication see the OntoDocker landing page:
 
 ![](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/ontodocker.png?raw=true)
 
@@ -116,7 +116,13 @@ Graph visualization via WebVOWL 1.1.7
 
 If the visualization doesn't load, clear the browsers cache and refresh the page.
 
-## Appendix and FAQ
+## Appendix, Troubleshooting  and FAQ
+
+### Docker fails  to build the image 
+If docker is unable to build the image due to failures of `apt-get` to connect to the internet, you might have to adjust your firewall settings as described in the [Docker manual](https://docs.docker.com/network/bridge/#enable-forwarding-from-docker-containers-to-the-outside-world):
+```bash=
+sudo iptables -P FORWARD ACCEPT
+```
 
 :::info
 **Find this document incomplete?** Leave a comment!
