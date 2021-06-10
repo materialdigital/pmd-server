@@ -1,7 +1,7 @@
 ---
 title: OntoDocker
 nav_order: 1
-parent: PMD-S Services 
+parent: PMD-S Services
 ---
 
 OntoDocker
@@ -28,7 +28,7 @@ OntoDocker is a Flask application-prototype to access a Blazegraph instance via 
 ## Setup
 ### Requirements
 * working directory is base directory of the PMD-Server repo as described under [PMD-S Core](https://hackmd.io/@materialdigital/HJwVOfQ5_)
-* Running reverse proxy as described under - [Reverse Proxy](https://hackmd.io/@materialdigital/H1t3_GQ9O) 
+* Running reverse proxy as described under - [Reverse Proxy](https://hackmd.io/@materialdigital/H1t3_GQ9O)
 
 ### 1. Clone the repository
 
@@ -37,7 +37,7 @@ git clone https://git.material-digital.de/apps/ontodocker.git
 cd ontodocker
 ```
 
-### 2. Copy compose template 
+### 2. Copy compose template
 
 ```bash
 # copy (or link) the compose file template
@@ -56,7 +56,7 @@ docker-compose build
 docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-register --initial-access-token [TOKEN] https://[SSO_URL]/auth/realms/[SSO_REALM] [ONTODOCKER_URL]
 ```
 
-### 4. Start OntoDocker 
+### 4. Start OntoDocker
 After successful configuration of the SSO you can start OntoDocker:
 
 ```bash
@@ -82,7 +82,7 @@ export ONTODOCKER_URL=ontodocker.domain.de
 # change to pmd-server directory
 cd ..
 
-# add the nginx configuration from the template 
+# add the nginx configuration from the template
 sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx/prod.conf > data/nginx/ontodocker.conf
 ```
 
@@ -117,17 +117,6 @@ Graph visualization via WebVOWL 1.1.7
 
 If the visualization doesn't load, clear the browsers cache and refresh the page.
 
-## Appendix, Troubleshooting  and FAQ
-
-### Docker fails  to build the image 
-If docker is unable to build the image due to failures of `apt-get` to connect to the internet, you might have to adjust your firewall settings as described in the [Docker manual](https://docs.docker.com/network/bridge/#enable-forwarding-from-docker-containers-to-the-outside-world):
-```bash
-sudo iptables -P FORWARD ACCEPT
-```
-
-:::info
-**Find this document incomplete?** Leave a comment!
-:::
 
 [Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/H1P_XW7qO)
 

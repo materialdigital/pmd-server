@@ -2,6 +2,7 @@
 title: PMD-S Services
 nav_order: 3
 has_children: true
+has_toc: false
 ---
 
 PMD-S Services
@@ -12,8 +13,8 @@ PMD-S Services
 ### Available Services
 currently the following services can be added to your PMD-S instance:
 
-* [OntoDocker](https://hackmd.io/@materialdigital/rJFe5vQ5_)
-* [pyiron](https://hackmd.io/@materialdigital/H1P_XW7qO)
+* [OntoDocker](onto-docker.md)
+* [pyiron](pyiron.md)
 
 
 ###### tags: `PMD Deployment guide`

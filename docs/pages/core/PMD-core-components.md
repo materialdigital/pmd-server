@@ -12,12 +12,12 @@ PMD Core components
 
 The initial PMD instance setup currently includes the following components:
 
-* [Reverse Proxy (nginx)](https://hackmd.io/@materialdigital/H1t3_GQ9O) icluding an optional SSL-Certificate Service (certbot)
-* [UserManagement (Keycloak - optional in the standalone context)](https://hackmd.io/@materialdigital/SJa76P7cO)
+* [Reverse Proxy (nginx)](reverse_proxy.md) including an optional SSL-Certificate Service (certbot)
+* [UserManagement (Keycloak - optional in the standalone context)](keycloak.md)
 
 ## Clone the core repository
 
-In order to establih a base configuration clone the PMD server repository and change into it.
+In order to establish a base configuration clone the PMD server repository and change into it.
 
 ```bash
 # clone the repo and change into it
@@ -27,4 +27,3 @@ cd pmd server
 
 
 ###### tags: `PMD Deployment guide`
-{: .no_toc }

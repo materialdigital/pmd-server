@@ -18,7 +18,7 @@ Reverse Proxy (nginx)
 - TOC
 {:toc}
 
-The reverse proxy provides a single entrypoint and optionally TLS encryption for all externally exposed web interfaces.
+The reverse proxy provides a single entry point and optionally TLS encryption for all externally exposed web interfaces.
 
 
 ## Choosing and starting a reverse proxy configuration
@@ -29,12 +29,12 @@ Make sure You've checked out the repository as detailed in [PMD-S Core Component
 
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
 * I. Simple reverse proxy&mdash;no SSL (test environments)
-* II. Reverse proxy with automtically generated Let's Encrypt certificates (Recommended)
+* II. Reverse proxy with automatically generated Let's Encrypt certificates (Recommended)
 * III. Reverse proxy with independently retrieved certificates
 
 
 ### I. Simple reverse proxy &mdash; no SSL
-This reverse proxy provides a quick entrypoint for local test setups.
+This reverse proxy provides a quick entry point for local test setups.
 
 You can start out by copying the compose example into your main working directory.
 
@@ -58,7 +58,7 @@ services:
       - ./data/nginx:/etc/nginx/conf.d
     networks:
       - proxy-net
-      
+
 networks:
   proxy-net:
     name: pmd-reverse-proxy-net
@@ -79,10 +79,10 @@ You should now be able to see the default landing page of the reverse proxy.
 ---
 
 ### II. Reverse proxy with automtically generated Let's Encrypt certificates (Recommended)
-In order to add TLS encryption, you can use automatically generated certificats from [Let's Encrypt](https://letsencrypt.org).
+In order to add TLS encryption, you can use automatically generated certificates from [Let's Encrypt](https://letsencrypt.org).
 
 **Requirements**
-* Port 80 needs to be accessible from the internet. 
+* Port 80 needs to be accessible from the internet.
 * The nginx configuration needs to be refreshed periodically to load new certificates.
 
 
@@ -91,7 +91,7 @@ In order to add TLS encryption, you can use automatically generated certificats 
 * automated renewal of certificates
 
 For this setup slight modifications of the simple compose setup are required:
-1. Adjusted `command` of the nginx service to ensure new/renewed certificates are automaically loaded
+1. Adjusted `command` of the nginx service to ensure new/renewed certificates are automatically loaded
 2. A `certbot` service that generates and renews certificates
 3. shared volumes between the `nginx` and `certbot` service that hold the acme challenge and certificates
 4. An nginx configuration that serves requests to the `/.well-known/acme-challenge/` endpoint
@@ -132,7 +132,7 @@ In order to serve requests for the Let's encrypt challenge, you need a simple ng
 # ! Replace "pmd-s.domain.de" with the actual URL for the service
 export PMD_URL=pmd-s.domain.de
 
-# add the nginx configuration from the template 
+# add the nginx configuration from the template
 sed "s/\[URL\]/${PMD_URL}/" data/nginx/nginx_certbot.conf.template > data/nginx/site.conf
 ```
 
@@ -162,7 +162,7 @@ Open it in an editor and enter the domain name for which the certificate should 
 vi scripts/init-letsencrypt.sh
 
 
-# run the script 
+# run the script
 bash scripts/init-letsencrypt.sh
 
 # Check if both service are indeed up and running
@@ -228,7 +228,7 @@ services:
       - cert.pem
       - key.pem
       - dhparam.pem
-      
+
 secrets:
   cert.pem:
     file: ${CERT_PATH:-./nginx/cert.pem}
@@ -267,7 +267,7 @@ docker-compose ps
 
 ## Connecting services to the running reverse proxy
 :::warning
-**Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section. 
+**Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section.
 :::
 
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:

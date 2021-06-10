@@ -1,7 +1,7 @@
 ---
 title: pyiron
 nav_order: 1
-parent: PMD-S Services 
+parent: PMD-S Services
 ---
 
 Pyiron
@@ -17,7 +17,7 @@ Pyiron
 - TOC
 {:toc}
 
-# Deployment of pyiron workflow environment 
+# Deployment of pyiron workflow environment
 [This repository](https://github.com/materialdigital/pyiron_workflow_environment_deployment) provides the configuration files, needed for the deployment of a pre-configured jupyterhub to run pyiron workflows.
 
 ## Content of the repository
@@ -27,13 +27,13 @@ Pyiron
 | `static.json` | a json file containing the non-configurable environment variables |
 | `nginx/pyiron.conf` | A template of the configuration file for the Nginx reverse proxy |
 | `docker-compose.yml` | the compose file, which runs jupyterhub and its Postgres database services. |
-   
+
 ## Deployment Guide
 ### The infrastructure, OS and other required packages
 As an infrastructure, the deployment requires:  
 - A server running a Linux operating system
 - Installation of docker engine and docker-compose
-- Adequate resources for running jupyterhub: (>2GB of RAM + 2 VCPU) 
+- Adequate resources for running jupyterhub: (>2GB of RAM + 2 VCPU)
 - The users' resources on the server should be proportional to the number of users (~2GB of RAM, 2VCPU, 10GB of storage per users)
 
 ### Assumptions
@@ -46,7 +46,7 @@ In the configuration file `config.json`, it is needed to pass in a set of pyiron
 
 ### Nginx configuration
 For the Nginx reverse proxy, you need to provide a configuration file, e.g. `pyiron.conf`. A template of such file is provided in the repository under `repo_path/nginx/pyiron.conf`  
-After adding the domain, and the path to the SSL certificates and key (as described [here](https://hackmd.io/@materialdigital/H1t3_GQ9O)), you should copy it to the nginx directory:
+After adding the domain, and the path to the SSL certificates and key (as described [here](reverse_proxy.md)), you should copy it to the nginx directory:
 ```bash
 cp nginx/pyiron.conf ../data/nginx/
 ```
@@ -74,19 +74,19 @@ It is assumed that the current working directory is the root of [PMD-S core repo
    cd pyiron
    ```
 2) Providing the values for the keys in the `config.json` file. The keys are:
-- `OAUTH2_TOKEN_URL`: Keycloak Tocken URL; here you need only to change the domain and the realm
+- `OAUTH2_TOKEN_URL`: Keycloak Token URL; here you need only to change the domain and the realm
 - `OAUTH2_AUTHORIZE_URL`:Keycloak authorize URL; here you need only to change the domain and the realm
 - `OAUTH2_USERDATA_URL`: Keycloak userdate URL; here you need only to change the domain and the realm
 - `OAUTH_CALLBACK_URL`: Keycloak call back URL; here you need only to change the domain
 - `CLIENT_ID`: The client ID defined in Keycloak
-- `CLIENT_SECRET`: The secret for the client, provided from the Keycloak instance 
-- `PYIRON_BASE`: The relavant information of pyiron_base image in the form of `image_name:tag, e.g. pyiron/base:2021-06-04`
-- `PYIRON_ATOMISTIC`: The relavant information of pyiron_atomistics image in the form of `image_name:tag, e.g. pyiron/pyiron:2021-06-04`
-- `PYIRON_CONTINUUM`: The relavant information of pyiron_continuum image in the form of `image_name:tag, e.g. pyiron/continuum:2021-06-04`.
-- `PYIRON_EXPERIMENTAL`: The relavant information of pyiron_experimental image in the form of `image_name:tag, e.g. pyiron/experimental:2021-06-04`
+- `CLIENT_SECRET`: The secret for the client, provided from the Keycloak instance
+- `PYIRON_BASE`: The relevant information of pyiron_base image in the form of `image_name:tag, e.g. pyiron/base:2021-06-04`
+- `PYIRON_ATOMISTIC`: The relevant information of pyiron_atomistics image in the form of `image_name:tag, e.g. pyiron/pyiron:2021-06-04`
+- `PYIRON_CONTINUUM`: The relevant information of pyiron_continuum image in the form of `image_name:tag, e.g. pyiron/continuum:2021-06-04`.
+- `PYIRON_EXPERIMENTAL`: The relevant information of pyiron_experimental image in the form of `image_name:tag, e.g. pyiron/experimental:2021-06-04`
 - `MEM_LIMIT`: The limiting amount of RAM per user
 - `CPU_LIMIT`: The limiting amount of VCPU per user
-- `ADMIN_USER`: The username of jupyterhub admin, this username should be consistent with the username in the keycloak instance 
+- `ADMIN_USER`: The username of jupyterhub admin, this username should be consistent with the username in the keycloak instance
 - `POSTGRES_PASSWORD`: A password for the postgres database
 
 3) run the `config.py` script from the pmd-server parent directory.
@@ -102,14 +102,14 @@ It is assumed that the current working directory is the root of [PMD-S core repo
    ```bash
       docker-compose up -d
    ```
-   
+
 
 ### HPC connection (will be added soon)  
 In principal, the pyiron docker containers can submit jobs to the cluster according to pyiron documentation in [here](https://pyiron.readthedocs.io/en/latest/source/installation.html#submit-to-remote-hpc).
 This feature will be added to pyiron docker images in the next release.
 
 ## Room for modification
-Here we assumed a semi-automated deployment with minimal changes needed from the side of IT adminstrators. However, many things can be changed, such as:
+Here we assumed a semi-automated deployment with minimal changes needed from the side of IT administrators. However, many things can be changed, such as:
 - building a customized jupyterhub; this gives the possibility to change the jupyterhub configuration
 - In the current setup, we assumed to have four jupyter environments based on: `pyiron_base`, `pyiron_atomistics`, and `pyiron_continuum`, `pyiron_experimental`. This list can be extended in the case of a customized jupyterhub build.
 
