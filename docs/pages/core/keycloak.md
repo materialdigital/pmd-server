@@ -42,7 +42,7 @@ cd keycloak
 
 ### 2. Configure the service
 After copying the templates you should view and if necessary adjust the configuration (`config.json`):
-```json
+{% highlight json %}
 {
   "shared": {
     "db_password": "[db password]",
@@ -65,16 +65,19 @@ After copying the templates you should view and if necessary adjust the configur
     "POSTGRES_PASSWORD": "shared:db_password"
   }
 }
-```
+{% endhighlight %}
+
 Make sure to to verify that custom passwords have been inserted for the database and the Keycloak admin user (`[db password]` and `[password]`) before you continue and start the service.
 
 ### 3. Start the service
-:::info
-**Note:** In case your python version is not >=3.5, you can also run the `configure.py` script within a docker container:
+
+> **Note:** In case your python version is not >=3.5, you can also run the `configure.py`
+script within a docker container
+```bash
+`docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py`
 ```
-docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py
-```
-:::
+{: .bg-grey-lt-200 .py-2 .px-4 }
+
 
 ```bash
 # create environment files from config
@@ -113,7 +116,7 @@ export KEYCLOAK_URL=sso.domain.de
 # add the nginx configuration from the template
 sed "s/\[URL\]/${KEYCLOAK_URL}/" data/nginx/keycloak.conf.template > data/nginx/keycloak.conf
 
-# Check and ajust the template if necessary
+# Check and adjust the template if necessary
 vi data/nginx/keycloak.conf
 ```
 
