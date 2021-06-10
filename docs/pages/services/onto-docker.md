@@ -1,20 +1,21 @@
 ---
-title: 'OntoDocker'
+title: OntoDocker
+nav_order: 1
+parent: PMD-S Services 
 ---
 
 OntoDocker
 ===
-
+{: .no_toc }
 
 [![hackmd-github-sync-badge](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ/badge)](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ)
 
-[<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/rJKjpvmc_)
-
-
 
 ## Table of Contents
+{: .no_toc }
 
-[TOC]
+- TOC
+{:toc}
 
 ## Description
 
@@ -31,14 +32,14 @@ OntoDocker is a Flask application-prototype to access a Blazegraph instance via 
 
 ### 1. Clone the repository
 
-```bash=
+```bash
 git clone https://git.material-digital.de/apps/ontodocker.git
 cd ontodocker
 ```
 
 ### 2. Copy compose template 
 
-```bash=
+```bash
 # copy (or link) the compose file template
 cp docker-compose-prod.yml docker-compose.yml
 ```
@@ -47,7 +48,7 @@ cp docker-compose-prod.yml docker-compose.yml
 In order to connect OntoDocker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
 
-```bash=+
+```bash
 # Build the containers
 docker-compose build
 
@@ -58,7 +59,7 @@ docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-re
 ### 4. Start OntoDocker 
 After successful configuration of the SSO you can start OntoDocker:
 
-```bash=+
+```bash
 # Start onto-docker after rebuild to ensure `client_secret.json` is added to the image
 docker-compose up -d --build
 
@@ -73,7 +74,7 @@ docker-compose ps
 
 #### Add nginx configuration
 
-```bash=+
+```bash
 # save OntoDocker URL to shell variable
 # ! Replace "ontodocker.domain.de" with the actual URL for the service
 export ONTODOCKER_URL=ontodocker.domain.de
@@ -87,13 +88,13 @@ sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx/prod.conf > data/nginx/ontod
 
 #### Retrieve Let's Encrypt certificate
 
-```bash=+
+```bash
 
 docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d ${ONTODOCKER_URL}
 ```
 
 #### Test and load the configuration
-```bash=
+```bash
 # Test the new configuration
 docker-compose exec nginx nginx -t
 
@@ -120,7 +121,7 @@ If the visualization doesn't load, clear the browsers cache and refresh the page
 
 ### Docker fails  to build the image 
 If docker is unable to build the image due to failures of `apt-get` to connect to the internet, you might have to adjust your firewall settings as described in the [Docker manual](https://docs.docker.com/network/bridge/#enable-forwarding-from-docker-containers-to-the-outside-world):
-```bash=
+```bash
 sudo iptables -P FORWARD ACCEPT
 ```
 
@@ -130,4 +131,6 @@ sudo iptables -P FORWARD ACCEPT
 
 [Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/H1P_XW7qO)
 
+
 ###### tags: `PMD Deployment guide`
+{: .no_toc }

@@ -1,18 +1,21 @@
 ---
 title: 'Keycloak'
+layout: default
+nav_order: 2
+parent: PMD Core Components
 ---
 
 Local SSO instance (Keycloak)
 ===
-
+{: .no_toc }
 
 [![hackmd-github-sync-badge](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw/badge)](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw)
 
-[<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/H1t3_GQ9O)
-
 ## Table of Contents
+{: .no_toc }
 
-[TOC]
+- TOC
+{:toc}
 
 ## Setup
 You can setup your own keycloak instance using the provided templates from the [PMD-Server repo](https://github.com/materialdigital/pmd-server).
@@ -23,7 +26,7 @@ You can setup your own keycloak instance using the provided templates from the [
 
 
 ### 1. Copy the template files
-```bash=
+```bash
 # create separate directory 
 mkdir keycloak
 
@@ -73,7 +76,7 @@ docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py
 ```
 :::
 
-```bash=+
+```bash
 # create environment files from config
 python ../scripts/configure.py
 
@@ -91,18 +94,18 @@ This section assumes you are using Let's Encrypt certificates. If you want to us
 :::
 
 First you need to change back to the `pmd-server` directory
-```bash=+
+```bash
 cd ..
 ```
 #### certificate generation
 You can now generate the certificate for the service using certbot:
 
-```bash=+
+```bash
 docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d [KEYCLOAK_URL]
 ```
 
 After the certificate has been created you can add the nginx configuration:
-```bash=+
+```bash
 # save KeyCloak URL to shell variable
 # ! Replace "sso.domain.de" with the actual URL for the service
 export KEYCLOAK_URL=sso.domain.de
@@ -116,7 +119,7 @@ vi data/nginx/keycloak.conf
 
 Finally the new configuration just needs to be loaded by nginx:
 
-```bash=
+```bash
 # Test the new configuration
 docker-compose exec nginx nginx -t
 
@@ -130,6 +133,8 @@ Once completed you should now be able to acceess Keycloak under the `[KEYCLOAK_U
 
 ![keycloak landing page](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/local_sso.png?raw=true)
 
-[Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/rJKjpvmc_)
+
 
 ###### tags: `PMD Deployment guide`
+{: .no_toc }
+{: .no_toc }

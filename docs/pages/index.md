@@ -1,5 +1,8 @@
 ---
-title: 'General information'
+title: General information
+layout: page
+permalink: /
+nav_order: 1
 ---
 
 PMD Deployment Guide
@@ -38,12 +41,12 @@ For a subsequent incorpoaration into the PMD mesh (WIP) it is advisable to fullf
 ## Setup your environment
 * make sure to install all the requirements
 * if you haven't done so, ensure the [user is in the docker group](https://docs.docker.com/engine/install/linux-postinstall/) (otherwise prefix all docker commands with `sudo`):
-```bash=
+```bash
 # Add user to docker group 
 # NOTE: this is equivalent to granting admin priviliges
 usermod -a -G docker $(whoami)
 ```
 
-[Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/HJwVOfQ5_)
 
 ###### tags: `PMD Deployment guide`
+{: .no_toc }

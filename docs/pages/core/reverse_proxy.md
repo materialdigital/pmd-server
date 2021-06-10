@@ -1,18 +1,22 @@
 ---
-title: 'Reverse Proxy'
+title: Reverse Proxy
+layout: default
+nav_order: 1
+parent: PMD Core Components
 ---
 
 Reverse Proxy (nginx)
 ===
+{: no_toc }
 
 [![hackmd-github-sync-badge](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA/badge)](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA)
 
 
-[<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/HJwVOfQ5_)
-
 ## Table of Contents
+{: .no_toc }
 
-[TOC]
+- TOC
+{:toc}
 
 The reverse proxy provides a single entrypoint and optionally TLS encryption for all externally exposed web interfaces.
 
@@ -34,7 +38,7 @@ This reverse proxy provides a quick entrypoint for local test setups.
 
 You can start out by copying the compose example into your main working directory.
 
-```bash=
+```bash
 # copy the proxy configuratiion
 cp compose-templates/docker-compose-nginx.yml docker-compose.yml
 # Add a default configuration
@@ -62,7 +66,7 @@ networks:
 ```
 
 This is all that is required. You can start the reverse proxy using `docker-compose`:
-```bash=
+```bash
 docker-compose up -d
 # Check whether the service started properly
 docker-compose ps
@@ -96,7 +100,7 @@ For this setup slight modifications of the simple compose setup are required:
 
 First copy the compose example into your main working directory.
 
-```bash=
+```bash
 # copy the proxy configuratiion
 cp compose-templates/docker-compose-nginx-certbot.yml docker-compose.yml
 ```
@@ -123,7 +127,7 @@ services:
 
 In order to serve requests for the Let's encrypt challenge, you need a simple nginx configuration
 
-```bash=
+```bash
 # save Server URL to shell variable
 # ! Replace "pmd-s.domain.de" with the actual URL for the service
 export PMD_URL=pmd-s.domain.de
@@ -153,7 +157,7 @@ staging=0 # Set to 1 if you're testing your setup to avoid hitting request limit
 Open it in an editor and enter the domain name for which the certificate should be issued and an e-mail address for renewal reminders in case certbot fails to renew the certificate.
 
 
-```bash=
+```bash
 # open the letsencrypt script in your editor
 vi scripts/init-letsencrypt.sh
 
@@ -201,7 +205,7 @@ server {
 ```
 Just replace the `[URL]` part with the domain for which you requested the certificate and load the updated configuration:
 
-```bash=
+```bash
 # Test the new configuration
 docker-compose exec nginx nginx -t
 
@@ -246,7 +250,7 @@ The certificate can then be loaded in nginx with the following directives:
 
 Setting up the reverse proxy thus only requires a few simple steps
 
-```bash=
+```bash
 # copy the compose template
 cp compose-templates/docker-compose-nginx-ssl.yml docker-compose.yml
 
@@ -290,14 +294,14 @@ networks:
 
 
 Once you have adjusted the compose file bring up the service using docker compose:
-```bash=
+```bash
 cd [path_to_pmd_app]
 docker-compose up -d
 cd [path to pmd-server]
 ```
 You can now generate the certificate for pmd-app.mydomain.de using certbot:
 
-```bash=
+```bash
 docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d pmd-app.mydomain.de
 ```
 After the certificate has been created you can add the nginx configuration of the service to `data/nginx/pmd-app.conf`:
@@ -324,7 +328,7 @@ server {
 
 Finally the new configuration just needs to be loaded by nginx to handle requests to the new service. If the reverse proxy is used for other services as well, it is however advisable to test the new configuration before reloading nginx.
 
-```bash=
+```bash
 # Test the new configuration
 docker-compose exec nginx nginx -t
 
@@ -332,6 +336,5 @@ docker-compose exec nginx nginx -t
 docker-compose exec nginx nginx -s reload
 ```
 
-[Next <i class="fa fa-arrow-circle-right"></i>](https://hackmd.io/@materialdigital/SJa76P7cO)
-
 ###### tags: `PMD Deployment guide`
+{: .no_toc }

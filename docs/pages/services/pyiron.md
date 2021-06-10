@@ -1,18 +1,21 @@
 ---
-title: 'pyiron'
+title: pyiron
+nav_order: 1
+parent: PMD-S Services 
 ---
 
 Pyiron
 ===
+{: no_toc}
 
 
 [![hackmd-github-sync-badge](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA/badge)](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA)
 
-[<i class="fa fa-arrow-circle-left"></i> Previous](https://hackmd.io/@materialdigital/rJFe5vQ5_)
-
 ## Table of Contents
+{: no_toc}
 
-[TOC]
+- TOC
+{:toc}
 
 # Deployment of pyiron workflow environment 
 [This repository](https://github.com/materialdigital/pyiron_workflow_environment_deployment) provides the configuration files, needed for the deployment of a pre-configured jupyterhub to run pyiron workflows.
@@ -110,7 +113,6 @@ Here we assumed a semi-automated deployment with minimal changes needed from the
 - building a customized jupyterhub; this gives the possibility to change the jupyterhub configuration
 - In the current setup, we assumed to have four jupyter environments based on: `pyiron_base`, `pyiron_atomistics`, and `pyiron_continuum`, `pyiron_experimental`. This list can be extended in the case of a customized jupyterhub build.
 
- 
-
 
 ###### tags: `PMD Deployment guide`
+{: .no_toc }
