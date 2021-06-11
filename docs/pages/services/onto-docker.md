@@ -27,8 +27,8 @@ OntoDocker is a Flask application-prototype to access a Blazegraph instance via 
 
 ## Setup
 ### Requirements
-* working directory is base directory of the PMD-Server repo as described under [PMD-S Core](https://hackmd.io/@materialdigital/HJwVOfQ5_)
-* Running reverse proxy as described under - [Reverse Proxy](https://hackmd.io/@materialdigital/H1t3_GQ9O)
+* working directory is base directory of the PMD-Server repo as described under [PMD-S Core](PMD-core-components.md})
+* Running reverse proxy as described under - [Reverse Proxy](reverse_proxy.md)
 
 ### 1. Clone the repository
 
@@ -68,9 +68,9 @@ docker-compose ps
 ```
 
 ### 5. Connect onto-docker to the reverse proxy
-:::warning
-**Note:** This example assumes you chose the reverse proxy with certbot.
-:::
+
+> **Note:** This example assumes you chose the reverse proxy with certbot.
+{: .warning }
 
 #### Add nginx configuration
 
