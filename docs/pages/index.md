@@ -16,9 +16,8 @@ PMD Deployment Guide
 The PMD-Mesh is envisioned as a network of PMD instances acting as IDS Data Providers and Data Consumers. Every PMD instance has the same underlying base - A PMD Server (PMD-S).
 While the architecture of the PMD-mesh is still work in progress, core functionalities of a PMD-S instance can already be deployed. The usage of docker and docker-compose for that purpose, ensures an easy transition of an initial standalone server into the PMD-Mesh.
 
-:::warning
-**Note:** firewalls and restrictive environments can cause various issues with the docker setup, which we are unable to foresee/test/cover. While we will try to help troubleshoot such issues, try to consult other online resources as well. If you manage to find a solution without our help - Let us know and we can add it to the Known issues/FAQ section
-:::
+> **Note:** firewalls and restrictive environments can cause various issues with the docker setup, which we are unable to foresee/test/cover. While we will try to help troubleshoot such issues, try to consult other online ressources as well. If you manage to find a solution without our help - Let us know and we can add it to the Known issues/FAQ section
+{: .warning }
 
 ## System Requirements
 **Required:**

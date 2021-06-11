@@ -15,3 +15,33 @@ $code-background-color: $grey-lt-000;
 $search-background-color: $grey-lt-000;
 $table-background-color: $grey-lt-000;
 $feedback-color: darken($sidebar-color, 3%);
+
+.highlight pre  {
+	overflow: auto;
+}
+
+
+.info, .warning, .danger {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.info {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+.warning{
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	border-color: #faebcc;
+}
+
+.danger{
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	border-color: #faebcc;
+}

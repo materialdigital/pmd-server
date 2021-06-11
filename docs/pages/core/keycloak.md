@@ -76,8 +76,7 @@ script within a docker container
 ```bash
 `docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py`
 ```
-{: .bg-grey-lt-200 .py-2 .px-4 }
-
+{: .info }
 
 ```bash
 # create environment files from config
@@ -92,14 +91,16 @@ docker-compose ps
 
 ### 4. Make the service available by adding it to the reverse proxy
 Finally, you just need to add the service to the reverse proxy to make it available.
-:::info
-This section assumes you are using Let's Encrypt certificates. If you want to use your own certificates, skip the "certificate generation" part and adjust the paths to the certificates accordingly, as described under [Reverse Proxy configuration](https://hackmd.io/@materialdigital/H1t3_GQ9O)
-:::
+
+> This section assumes you are using Let's Encrypt certificates. If you want to use your own certificates, skip the "certificate generation" part and adjust the paths to the certificates accordingly, as described under [Reverse Proxy configuration](https://hackmd.io/@materialdigital/H1t3_GQ9O)
+{: .info }
 
 First you need to change back to the `pmd-server` directory
+
 ```bash
 cd ..
 ```
+
 #### certificate generation
 You can now generate the certificate for the service using certbot:
 
@@ -108,6 +109,7 @@ docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d [K
 ```
 
 After the certificate has been created you can add the nginx configuration:
+
 ```bash
 # save KeyCloak URL to shell variable
 # ! Replace "sso.domain.de" with the actual URL for the service
@@ -135,7 +137,6 @@ docker-compose exec nginx nginx -s reload
 Once completed you should now be able to access Keycloak under the `[KEYCLOAK_URL]` and login with the credentials from the configuration (`KEYCLOAK_USER` and `KEYCLOAK_PASSWORD`).
 
 ![keycloak landing page](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/local_sso.png?raw=true)
-
 
 
 ###### tags: `PMD Deployment guide`

@@ -1,4 +1,4 @@
 FROM jekyll/jekyll:latest
-COPY . /srv/jekyll
+COPY Gemfile /srv/jekyll/
 RUN bundle install
 CMD bundle exec jekyll serve

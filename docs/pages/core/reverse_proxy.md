@@ -25,7 +25,7 @@ The reverse proxy provides a single entry point and optionally TLS encryption fo
 
 ### Requirements
 
-Make sure You've checked out the repository as detailed in [PMD-S Core Components](https://hackmd.io/@materialdigital/HJwVOfQ5_)
+Make sure You've checked out the repository as detailed in [PMD-S Core Components](PMD-core-components.md)
 
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
 * I. Simple reverse proxy&mdash;no SSL (test environments)
@@ -47,7 +47,7 @@ cp data/nginx/local.conf.template data/nginx/local.conf
 
 You should than have a `docker-compose.yml` file with the following contents:
 
-```yaml
+{% highlight yaml %}
 version: '3'
 services:
   nginx:
@@ -63,7 +63,7 @@ networks:
   proxy-net:
     name: pmd-reverse-proxy-net
     driver: bridge
-```
+{% endhighlight %}
 
 This is all that is required. You can start the reverse proxy using `docker-compose`:
 ```bash
@@ -106,7 +106,8 @@ cp compose-templates/docker-compose-nginx-certbot.yml docker-compose.yml
 ```
 
 The added settings in this compose file include
-```yaml
+
+{% highlight yaml %}
 services:
   nginx:
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
@@ -123,7 +124,7 @@ services:
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-```
+{% endhighlight %}
 
 In order to serve requests for the Let's encrypt challenge, you need a simple nginx configuration
 
@@ -138,7 +139,7 @@ sed "s/\[URL\]/${PMD_URL}/" data/nginx/nginx_certbot.conf.template > data/nginx/
 
 Next you need to adjust the configuration in the `init-letsencrypt.sh` script:
 
-```bash
+{% highlight bash %}
 #!/bin/bash
 set -e
 
@@ -153,9 +154,9 @@ staging=0 # Set to 1 if you're testing your setup to avoid hitting request limit
 
 # Script - Do not change content below unless you know what you are doing -------
 ...
-```
-Open it in an editor and enter the domain name for which the certificate should be issued and an e-mail address for renewal reminders in case certbot fails to renew the certificate.
+{% endhighlight %}
 
+Open it in an editor and enter the domain name for which the certificate should be issued and an e-mail address for renewal reminders in case certbot fails to renew the certificate.
 
 ```bash
 # open the letsencrypt script in your editor
@@ -170,17 +171,20 @@ docker-compose ps
 ```
 
 If everything executed successfully both services should be reported as `UP`:
-```
+
+```bash
 $ docker-compose ps
        Name                     Command               State                                   Ports
 ------------------------------------------------------------------------------------------------------------------------------------
 pmd-core_certbot_1   /bin/sh -c trap exit TERM; ...   Up      443/tcp, 80/tcp
 pmd-core_nginx_1     /docker-entrypoint.sh /bin ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp
 ```
+
+
 #### Test your certificate
 If you would like to test whether the certificate is working properly, you can uncomment the server block listening to port 443 in `data/nginx/site.conf`:
 
-```
+{% highlight nginx %}
 server {
     listen 443 ssl;
     server_name [URL];
@@ -202,7 +206,8 @@ server {
         root   /usr/share/nginx/html;
     }
 }
-```
+{% endhighlight %}
+
 Just replace the `[URL]` part with the domain for which you requested the certificate and load the updated configuration:
 
 ```bash
@@ -221,7 +226,7 @@ In case you prefer to use a certificate from another certificate authority, or c
 
 Assuming the certificate including the certificate chain(`cert.pem`), private key (`key.pem`), and Diffie-Hellman parameters (`dhparam.pem`) are all located in an `nginx` subfolder, you can add them to your compose file as secrets:
 
-```yml
+{% highlight yaml %}
 services:
   nginx:
     secrets:
@@ -236,17 +241,18 @@ secrets:
     file: ${KEY_PATH:-./nginx/key.pem}
   dhparam.pem:
     file: ${DHPARAM_PATH:-./nginx/dhparam.pem}
-```
+{% endhighlight %}
 
 The certificate can then be loaded in nginx with the following directives:
-```
+
+{% highlight nginx %}
 ...
 
     ssl_certificate     /run/secrets/cert.pem;
     ssl_certificate_key /run/secrets/key.pem;
     ssl_dhparam         /run/secrets/dhparam.pem;
 ...
-```
+{% endhighlight %}
 
 Setting up the reverse proxy thus only requires a few simple steps
 
@@ -266,19 +272,20 @@ docker-compose ps
 
 
 ## Connecting services to the running reverse proxy
-:::warning
-**Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section.
-:::
+
+> **Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section.
+{: .bg-grey-lt-200 .py-2 .px-4 }
 
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:
-```yml
+
+{% highlight yaml %}
 version: '3.2'
 services:
   pmd-app:
     image: pmd-app:latest
-```
+{% endhighlight %}
 You only need to connect your service to the network of the reverse proxy by extending the compose file as follows:
-```yaml
+{% highlight yaml %}
 version: '3.2'
 services:
   pmd-app:
@@ -290,24 +297,26 @@ networks:
   proxy-net:
     name: pmd-reverse-proxy-net
     external: true
-```
+{% endhighlight %}
 
 
 Once you have adjusted the compose file bring up the service using docker compose:
+
 ```bash
 cd [path_to_pmd_app]
 docker-compose up -d
 cd [path to pmd-server]
 ```
+
 You can now generate the certificate for pmd-app.mydomain.de using certbot:
 
 ```bash
 docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d pmd-app.mydomain.de
 ```
+
 After the certificate has been created you can add the nginx configuration of the service to `data/nginx/pmd-app.conf`:
 
-
-```
+{% highlight nginx %}
 # pmd-app.conf:
 
 server {
@@ -323,8 +332,7 @@ server {
         proxy_pass http://pmd-app:8000;
     }
 }
-```
-
+{% endhighlight %}
 
 Finally the new configuration just needs to be loaded by nginx to handle requests to the new service. If the reverse proxy is used for other services as well, it is however advisable to test the new configuration before reloading nginx.
 
