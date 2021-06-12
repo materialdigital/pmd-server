@@ -45,3 +45,8 @@ $feedback-color: darken($sidebar-color, 3%);
 	background-color: #fcf8e3;
 	border-color: #faebcc;
 }
+.rouge-gutter {
+      max-width: 1em;
+      border-right: 1px solid $base04;
+      text-align: right;
+}
