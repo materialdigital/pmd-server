@@ -12,15 +12,17 @@ services:
     secrets:
       - cert.pem
       - key.pem
-      - dhparam.pem
+      # Uncomment this if You want to provide Your own Diffie-Hellman parameters.
+      # - dhparam.pem
 
 secrets:
   cert.pem:
     file: ${CERT_PATH:-./nginx/cert.pem}
   key.pem:
     file: ${KEY_PATH:-./nginx/key.pem}
-  dhparam.pem:
-    file: ${DHPARAM_PATH:-./nginx/dhparam.pem}
+  # Uncomment this if You want to provide Your own Diffie-Hellman parameters.
+  # dhparam.pem:
+  # file: ${DHPARAM_PATH:-./nginx/dhparam.pem}
 
 networks:
   proxy-net:
