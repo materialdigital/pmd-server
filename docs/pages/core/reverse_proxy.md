@@ -257,8 +257,9 @@ The certificate can then be loaded in nginx with the following directives:
 Setting up the reverse proxy thus only requires a few simple steps
 
 ```bash
-# copy the compose template
-cp compose-templates/docker-compose-nginx-ssl.yml docker-compose.yml
+# copy the compose template by replacing occurrences of a placeholder with your
+# actual virtual host name, for instance, "foo.bar.org".
+sed "s/[URL]/foo.bar.org/" compose-templates/docker-compose-nginx-ssl.yml > docker-compose.yml
 
 # copy the proxy configuratiion
 cp data/nginx/nginx_ssl.conf.template data/nginx/nginx_ssl.conf

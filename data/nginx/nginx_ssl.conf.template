@@ -1,13 +1,13 @@
 server {
     listen 80;
-    server_name *.foo.org;
+    server_name [URL];
     location / {
         return 301 https://$host$request_uri;
     }
 }
 server {
     listen 443 ssl;
-    server_name pmd-s1.foo.org;
+    server_name [URL];
     
     include ./conf.d/ssl.incl;
 
@@ -17,8 +17,7 @@ server {
 
     ssl_certificate     /run/secrets/cert.pem;
     ssl_certificate_key /run/secrets/key.pem;
-    # uncomment this of You require Diffie-Hellman params on Your own.
-#    ssl_dhparam         /run/secrets/dhparam.pem;
+    ssl_dhparam         /run/secrets/dhparam.pem;
 
     location / {
         root   /usr/share/nginx/html;
