@@ -54,16 +54,16 @@ cp nginx/pyiron.conf ../data/nginx/
 Of course, here it is assumed that the PMD-S core repo is the parent directory of the pyiron deployment directory.
 
 ### Adding pyiron client to Keycloak
-For configuring the hub to authenticate the users via keycloak, you need to create a client in the keycloak instance. You can create the client via the following steps:
-1) Signing in as the admin of the keycloak instance,
-2) Select your desirable realm
-3) Select clients from the left panel
-4) On the top right-hand side, select create.
-5) Enter a client ID, and a root URL. For the URL, you should provide the url of pyiron.
-   ![](client.png)
-6) click save.
-7) In the setting tab, change the access type to confidential, and save.
-8) From the credential tab, you can obtain the client secret.
+For configuring the hub to authenticate the users via keycloak, you need to create a client in the keycloak instance. You can create the client via the following steps:  
+1) Signing in as the admin of the keycloak instance  
+2) Select your desirable realm  
+3) Select clients from the left panel  
+4) On the top right-hand side, select create  
+5) Enter a client ID, and a root URL. For the URL, you should provide the url of pyiron  
+   ![](../../assets/images/adding_keycloak_client.png)  
+6) click save    
+7) In the setting tab, change the access type to confidential, and save  
+8) From the credential tab, you can obtain the client secret  
 
 ### Customizing `config.json`  
 According to the configuration of your pyiron server and the keycloak instance/client, the values for the given keys in the `config.json` file should be adjusted. 
