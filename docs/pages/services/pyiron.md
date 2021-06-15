@@ -9,18 +9,17 @@ Pyiron
 {: no_toc}
 
 
-[![hackmd-github-sync-badge](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA/badge)](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA)
-
 ## Table of Contents
 {: no_toc}
 
 - TOC
 {:toc}
+pyiron is an integrated development environment (IDE) for computational materials science. It integrates several computational/analysis tools in a common platform.
 
-# Deployment of pyiron workflow environment
-[This repository](https://github.com/materialdigital/pyiron_workflow_environment_deployment) provides the configuration files, needed for the deployment of a pre-configured jupyterhub to run pyiron workflows.
+## GitHub repository
+In our [GitHub repository](https://github.com/materialdigital/pyiron_workflow_environment_deployment), you obtain the configuration files, needed for the deployment of a pre-configured jupyterhub to run pyiron workflows.
 
-## Content of the repository
+### Content of the repository
 | File | Description |
 | ----------------- | ----------- |
 | `config.json` | a json file containing the configurable environment variables: keycloak client details, name of pyiron docker images, users' resources, and Postgres database Password |
