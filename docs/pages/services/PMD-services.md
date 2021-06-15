@@ -8,8 +8,6 @@ has_toc: false
 PMD-S Services
 ===
 
-[![hackmd-github-sync-badge](https://hackmd.io/QiSm9H-6SluXpc88aoYFUw/badge)](https://hackmd.io/QiSm9H-6SluXpc88aoYFUw)
-
 ### Available Services
 currently the following services can be added to your PMD-S instance:
 

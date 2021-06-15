@@ -9,8 +9,6 @@ has_toc: false
 PMD Core components
 ===
 
-[![hackmd-github-sync-badge](https://hackmd.io/SYBY8yRPRrq0hyx-fqyi2g/badge)](https://hackmd.io/SYBY8yRPRrq0hyx-fqyi2g)
-
 The initial PMD instance setup currently includes the following components:
 
 * [Reverse Proxy (nginx)](reverse_proxy.md) including an optional SSL-Certificate Service (certbot)

@@ -9,9 +9,6 @@ Reverse Proxy (nginx)
 ===
 {: no_toc }
 
-[![hackmd-github-sync-badge](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA/badge)](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA)
-
-
 ## Table of Contents
 {: .no_toc }
 
@@ -25,7 +22,7 @@ The reverse proxy provides a single entry point and optionally TLS encryption fo
 
 ### Requirements
 
-Make sure You've checked out the repository as detailed in [PMD-S Core Components](PMD-core-components.md)
+Make sure You've cloned the repository as detailed in [PMD-S Core Components](PMD-core-components.md)
 
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
 * I. Simple reverse proxy&mdash;no SSL (test environments)
@@ -172,7 +169,7 @@ docker-compose ps
 
 If everything executed successfully both services should be reported as `UP`:
 
-```bash
+```console
 $ docker-compose ps
        Name                     Command               State                                   Ports
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -222,9 +219,23 @@ docker-compose exec nginx nginx -s reload
 ---
 
 ### III. Reverse proxy with independently retrieved certificates
-In case you prefer to use a certificate from another certificate authority, or can not make port 80 publicly available, you can also provide your own certificates.
+In case you prefer to use a certificate from another certificate authority or
+can not make port 80 publicly available, you can also provide your own
+certificates.
 
-Assuming the certificate including the certificate chain(`cert.pem`), private key (`key.pem`), and Diffie-Hellman parameters (`dhparam.pem`) are all located in an `nginx` subfolder, you can add them to your compose file as secrets:
+We use explicitly generated Diffie-Hellman parameters for the Diffie-Hellman
+key-exchange. You may generate these with a command as simple as:
+
+```bash
+openssl dhparam -out dhparam.pem 4096
+```
+
+> **Note:** the time required for computing these parameters is considerable.
+{: .info }
+
+Now, assuming that the certificate including the certificate chain (`cert.pem`), private
+key (`key.pem`), and Diffie-Hellman parameters (`dhparam.pem`) are all located
+in an `nginx` subdirectory, you can add them to your compose file as secrets:
 
 {% highlight yaml %}
 services:
@@ -243,7 +254,7 @@ secrets:
     file: ${DHPARAM_PATH:-./nginx/dhparam.pem}
 {% endhighlight %}
 
-The certificate can then be loaded in nginx with the following directives:
+The certificate are then loaded in nginx with the following directives:
 
 {% highlight nginx %}
 ...
@@ -254,12 +265,25 @@ The certificate can then be loaded in nginx with the following directives:
 ...
 {% endhighlight %}
 
-Setting up the reverse proxy thus only requires a few simple steps
+Setting up the reverse proxy thus only requires a few simple steps:
+
+Make sure that the nginx-subdirectory exists and is populated with the
+following files:
+
+```console
+~/pmd-server$ ls nginx
+cert.pem  dhparam.pem  key.pem
+```
+
+Then, copy the compose template by replacing occurrences of a placeholder string (`[URL]`) with your
+ actual virtual host name, for instance, `foo.bar.org`:
 
 ```bash
-# copy the compose template
-cp compose-templates/docker-compose-nginx-ssl.yml docker-compose.yml
+sed "s/[URL]/foo.bar.org/" compose-templates/docker-compose-nginx-ssl.yml > docker-compose.yml
+```
 
+Finally:
+```bash
 # copy the proxy configuratiion
 cp data/nginx/nginx_ssl.conf.template data/nginx/nginx_ssl.conf
 
@@ -273,8 +297,10 @@ docker-compose ps
 
 ## Connecting services to the running reverse proxy
 
-> **Note:** this section just explains how a generic app can be incorporated, and does not represent a working example. If you are interested in a real example follow the OntoDocker or pyiron section.
-{: .bg-grey-lt-200 .py-2 .px-4 }
+> **Note:** this section just explains how a generic app can be incorporated,
+and does not represent a working example. If you are interested in a real
+example follow the OntoDocker or pyiron section.  
+{: .info }
 
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:
 

@@ -9,8 +9,6 @@ Local SSO instance (Keycloak)
 ===
 {: .no_toc }
 
-[![hackmd-github-sync-badge](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw/badge)](https://hackmd.io/MmiYyp4fRhiykoY7St4GQw)
-
 ## Table of Contents
 {: .no_toc }
 
@@ -140,5 +138,4 @@ Once completed you should now be able to access Keycloak under the `[KEYCLOAK_UR
 
 
 ###### tags: `PMD Deployment guide`
-{: .no_toc }
 {: .no_toc }

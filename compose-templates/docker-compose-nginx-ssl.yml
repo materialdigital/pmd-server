@@ -12,6 +12,7 @@ services:
     secrets:
       - cert.pem
       - key.pem
+      # Generate this file with the command: "openssl dhparam -out dhparam.pem 4096"  
       - dhparam.pem
 
 secrets:
