@@ -9,10 +9,7 @@ PMD Deployment Guide
 ===
 
 
-[![hackmd-github-sync-badge](https://hackmd.io/biFcWHrUTceoopWdvOmFuw/badge)](https://hackmd.io/biFcWHrUTceoopWdvOmFuw)
-
 ## Preface
-
 The PMD-Mesh is envisioned as a network of PMD instances acting as IDS Data Providers and Data Consumers. Every PMD instance has the same underlying base - A PMD Server (PMD-S).
 While the architecture of the PMD-mesh is still work in progress, core functionalities of a PMD-S instance can already be deployed. The usage of docker and docker-compose for that purpose, ensures an easy transition of an initial standalone server into the PMD-Mesh.
 

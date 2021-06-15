@@ -9,9 +9,6 @@ Reverse Proxy (nginx)
 ===
 {: no_toc }
 
-[![hackmd-github-sync-badge](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA/badge)](https://hackmd.io/c2xRJVAYR_OubI5NHyY9lA)
-
-
 ## Table of Contents
 {: .no_toc }
 
@@ -25,7 +22,7 @@ The reverse proxy provides a single entry point and optionally TLS encryption fo
 
 ### Requirements
 
-Make sure You've checked out the repository as detailed in [PMD-S Core Components](PMD-core-components.md)
+Make sure You've cloned the repository as detailed in [PMD-S Core Components](PMD-core-components.md)
 
 The core setup provides various compose file templates for the reverse Proxy. Choose the one that best matches your needs:
 * I. Simple reverse proxy&mdash;no SSL (test environments)
@@ -227,13 +224,14 @@ can not make port 80 publicly available, you can also provide your own
 certificates.
 
 We use explicitly generated Diffie-Hellman parameters for the Diffie-Hellman
-key-exchange.   You may generate these with a command as simple as:
+key-exchange. You may generate these with a command as simple as:
 
-```console
-$ openssl dhparam -out dhparam.pem 4096
+```bash
+openssl dhparam -out dhparam.pem 4096
 ```
 
-Note that the time required for computing these parameters is considerable.
+> **Note:** the time required for computing these parameters is considerable.
+{: .info }
 
 Now, assuming that the certificate including the certificate chain (`cert.pem`), private
 key (`key.pem`), and Diffie-Hellman parameters (`dhparam.pem`) are all located
@@ -279,6 +277,7 @@ cert.pem  dhparam.pem  key.pem
 
 Then, copy the compose template by replacing occurrences of a placeholder string (`[URL]`) with your
  actual virtual host name, for instance, `foo.bar.org`:
+
 ```bash
 sed "s/[URL]/foo.bar.org/" compose-templates/docker-compose-nginx-ssl.yml > docker-compose.yml
 ```
@@ -300,8 +299,8 @@ docker-compose ps
 
 > **Note:** this section just explains how a generic app can be incorporated,
 and does not represent a working example. If you are interested in a real
-example follow the OntoDocker or pyiron section.  {: .bg-grey-lt-200 .py-2 .px-4
-}
+example follow the OntoDocker or pyiron section.  
+{: .info }
 
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:
 

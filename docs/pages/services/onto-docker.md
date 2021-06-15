@@ -8,9 +8,6 @@ OntoDocker
 ===
 {: .no_toc }
 
-[![hackmd-github-sync-badge](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ/badge)](https://hackmd.io/HjZbIFIGS7yAvZGHI0rhMQ)
-
-
 ## Table of Contents
 {: .no_toc }
 
