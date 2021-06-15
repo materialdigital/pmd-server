@@ -13,8 +13,9 @@ Pyiron
 {: no_toc}
 
 - TOC
-{:toc}
-pyiron is an integrated development environment (IDE) for computational materials science. It integrates several computational/analysis tools in a common platform.
+{:toc}  
+
+[pyiron](https://pyiron.org) is an integrated development environment (IDE) for computational materials science. It integrates several computational/analysis tools in a common platform and provides various functionalities for creation, management and sharing of your workflows. 
 
 ## GitHub repository
 In our [GitHub repository](https://github.com/materialdigital/pyiron_workflow_environment_deployment), you obtain the configuration files, needed for the deployment of a pre-configured jupyterhub to run pyiron workflows.
