@@ -36,7 +36,7 @@ This reverse proxy provides a quick entry point for local test setups.
 You can start out by copying the compose example into your main working directory.
 
 ```bash
-# copy the proxy configuratiion
+# copy the proxy configuration
 cp compose-templates/docker-compose-nginx.yml docker-compose.yml
 # Add a default configuration
 cp data/nginx/local.conf.template data/nginx/local.conf
@@ -98,7 +98,7 @@ For this setup slight modifications of the simple compose setup are required:
 First copy the compose example into your main working directory.
 
 ```bash
-# copy the proxy configuratiion
+# copy the proxy configuration
 cp compose-templates/docker-compose-nginx-certbot.yml docker-compose.yml
 ```
 
@@ -284,7 +284,7 @@ sed "s/[URL]/foo.bar.org/" compose-templates/docker-compose-nginx-ssl.yml > dock
 
 Finally:
 ```bash
-# copy the proxy configuratiion
+# copy the proxy configuration
 cp data/nginx/nginx_ssl.conf.template data/nginx/nginx_ssl.conf
 
 # start the service
