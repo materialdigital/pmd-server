@@ -8,7 +8,6 @@ Pyiron
 ===
 {: no_toc}
 
-[![hackmd-github-sync-badge](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA/badge)](https://hackmd.io/ut4CsaYCSAq4K3XDOnGAqA)
 ## Table of Contents
 {: no_toc}
 
