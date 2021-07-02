@@ -29,10 +29,9 @@ In order to run pyiron, prepare for the following  hardware-requirements:
 
 Morever, we assume the following:
 
-- We need Keycloak as the user's authentication provider. Therefore, a client id
-  and secret are needed.
+- This setup uses Keycloak as identity provider. Therefore, a client id and secret are needed.
 - For simplicity, we assume that all jobs are run on the same server as the
-  jupyterhub.
+  jupyterhub container.
 - The configuration of the hostnames is assumed to be done separately by the admin, e.g. creating the A-record, etc
 
 
@@ -58,26 +57,26 @@ Just to give you a brief overview what's in there:
 
 
 ### 2. Configure Nginx
-For the Nginx reverse proxy, you need to provide a configuration file. A template of such file is provided in the repository under `repo_path/nginx/pyiron.conf`  
-After adding the domain, and the path to the SSL certificates and key (as described [here](reverse_proxy.md)), you should copy it to the nginx directory:
+For the Nginx reverse proxy, you need to provide a configuration file. A template is provided in the repository under `repo_path/nginx/pyiron.conf`  
+After adding the domain, and the path to the SSL certificates and key (as described [here](../core/reverse_proxy.md)), you should copy it to the nginx directory:
 ```bash
 cp nginx/pyiron.conf ../data/nginx/
 ```
 Of course, here it is assumed that the PMD-S core repo is the parent directory of the pyiron deployment directory.
 
-### 3. Adding the Pyiron Client to Keycloak
+### 3. Obtaining SSO credentials
+You can obtain SSO credentials to connect to the [MaterialDigital SSO]((https://sso.material-digital.de) ) (A)
+or use [your own Keycloak instance](../core/keycloak.md) (B) as identity provider (IDP)
 
-You have two options here: either You choose
-[sso.material-digital.de](https://sso.material-digital.de) as an external
-authentication service or You provide a keycloak-instance just on your own.
+#### (A) sso.material-digital.de as IDP (recommended)
+Submit a request for pyiron SSO credentials via the [Material Digital contact form](https://www.material-digital.de/contact/). 
+In the form provide the URL you have reserved for your pyiron instance.
 
-If you choose the external service, all You need is ......  You can then skip
-the remainder of this section.
-
-If you choose to have local user-authentication, you can create a
+#### (B) local SSO
+If you choose to use a [local Keycloak instance](../core/keycloak.md), you can create a
 keycloak-client via the following steps:
 
-1) Signing in as the admin of the keycloak instance  
+1) Sign in as the admin of the keycloak instance  
 2) Select your desirable realm  
 3) Select clients from the left panel  
 4) On the top right-hand side, select create  
