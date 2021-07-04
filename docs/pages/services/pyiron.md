@@ -113,25 +113,28 @@ the client secret (see Step 3. if you chose to configure keycloak by yourself).
 Also, do not forget to choose eligible image-tags for base, atomistic, continuum
 and experimental (see Step 4).
 
-In detail the meaning  of the keys in `config.json` are:
+The details of the keys in `config.json` can be found in the table below.
 
-- `OAUTH2_TOKEN_URL`: Keycloak Token URL; here you need only to change the domain and the realm
-- `OAUTH2_AUTHORIZE_URL`:Keycloak authorize URL; here you need only to change the domain and the realm
-- `OAUTH2_USERDATA_URL`: Keycloak userdate URL; here you need only to change the domain and the realm
-- `OAUTH_CALLBACK_URL`: Keycloak call back URL; here you need only to change the domain
-- `CLIENT_ID`: The client ID defined in Keycloak
-- `CLIENT_SECRET`: The secret for the client, provided from the Keycloak instance
-- `PYIRON_BASE`: The relevant information of pyiron_base image in the form of `image_name:tag, e.g. pyiron/base:2021-06-04`
-- `PYIRON_ATOMISTIC`: The relevant information of pyiron_atomistics image in the form of `image_name:tag, e.g. pyiron/pyiron:2021-06-04`
-- `PYIRON_CONTINUUM`: The relevant information of pyiron_continuum image in the form of `image_name:tag, e.g. pyiron/continuum:2021-06-04`.
-- `PYIRON_EXPERIMENTAL`: The relevant information of pyiron_experimental image in the form of `image_name:tag, e.g. pyiron/experimental:2021-06-04`
-- `MEM_LIMIT`: The limiting amount of RAM per user
-- `CPU_LIMIT`: The limiting amount of VCPU per user
-- `ADMIN_USER`: The username of jupyterhub admin, this username should be consistent with the username in the keycloak instance
-- `POSTGRES_PASSWORD`: A password for the postgres database
+| key | definition |
+|-----|------------|
+| `OAUTH2_TOKEN_URL` | Keycloak Token URL; here you need only to change the domain and the realm"
+| `OAUTH2_AUTHORIZE_URL` | Keycloak authorize URL; here you need only to change the domain and the realm |
+| `OAUTH2_USERDATA_URL` | Keycloak userdate URL; here you need only to change the domain and the realm |
+| `OAUTH_CALLBACK_URL` | Keycloak call back URL; here you need only to change the domain|
+| `CLIENT_ID` | The client ID defined in Keycloak |
+| `CLIENT_SECRET` | The secret for the client, provided from the Keycloak instance|
+| `PYIRON_BASE` | The relevant information of pyiron_base image in the form of `image_name:tag, e.g. pyiron/base:2021-06-04` |
+| `PYIRON_ATOMISTIC` | The relevant information of pyiron_atomistics image in the form of `image_name:tag, e.g. pyiron/pyiron:2021-06-04` |
+| `PYIRON_CONTINUUM` |  The relevant information of pyiron_continuum image in the form of `image_name:tag, e.g. pyiron/continuum:2021-06-04` |
+| `PYIRON_EXPERIMENTAL` | The relevant information of pyiron_experimental image in the form of `image_name:tag, e.g. pyiron/experimental:2021-06-04` |
+| `MEM_LIMIT` | The limiting amount of RAM per user |
+| `CPU_LIMIT` | The limiting amount of VCPU per user |
+| `ADMIN_USER` | The username of jupyterhub admin, this username should be consistent with the username in the keycloak instance |
+| `POSTGRES_PASSWORD` | A password for the postgres database |
 
-As  final steps, generate the env-files for docker-compose:
 
+### 6. Generate the env-files
+To generate the environment files, run the `configure.py` script from the parent directory. The script can also be found [here](https://github.com/materialdigital/pmd-server/blob/main/scripts/configure.py)
 ```
 cd pyiron
 # run `configure.py` script from the pmd-server parent directory
@@ -141,7 +144,8 @@ python3 ../scripts/configure.py
 docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py-w /tmp  python:3-alpine  python configure.py   
 ```
 
-And run the compose-script to start the containers via:
+### 7. Run docker-compose
+Run the compose-script to start the containers via:
 ```
 docker-compose up -d 
 ```
