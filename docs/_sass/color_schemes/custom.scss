@@ -1,33 +1,17 @@
-.highlight pre  {
-	overflow: auto;
-}
+$body-background-color: #fff;
+$sidebar-color: #f9fbfd;
+$border-color: $grey-lt-100;
 
+$body-text-color: $grey-dk-100;
+$body-heading-color: $grey-dk-200;
+$nav-child-link-color: $grey-dk-100;
+$search-result-preview-color: $grey-dk-000;
 
-.info, .warning, .danger {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-}
+$link-color: #27529c;
+$btn-primary-color: #27529c;
+$base-button-color: $grey-lt-200;
 
-.info {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.warning{
-	color: #8a6d3b;
-	background-color: #fcf8e3;
-	border-color: #faebcc;
-}
-
-.danger{
-	color: #8a6d3b;
-	background-color: #fcf8e3;
-	border-color: #faebcc;
-}
-.rouge-gutter {
-      width: 2rem;
-      text-align: right;
-}
+$code-background-color: $grey-lt-000;
+$search-background-color: $grey-lt-000;
+$table-background-color: $white;
+$feedback-color: darken($sidebar-color, 3%);

@@ -49,7 +49,7 @@ In order to connect OntoDocker to the IDP you might need an initial access token
 # Build the containers
 docker-compose build
 
-# generate the client-secrets.json for onto-docker
+# generate the client_secrets.json for onto-docker
 docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-register --initial-access-token [TOKEN] https://[SSO_URL]/auth/realms/[SSO_REALM] [ONTODOCKER_URL]
 ```
 
@@ -57,7 +57,7 @@ docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-re
 After successful configuration of the SSO you can start OntoDocker:
 
 ```bash
-# Start onto-docker after rebuild to ensure `client_secret.json` is added to the image
+# Start onto-docker after rebuild to ensure `client_secrets.json` is added to the image
 docker-compose up -d --build
 
 # verify onto-docker and blazegraph are running properly

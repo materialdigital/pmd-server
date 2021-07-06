@@ -15,7 +15,7 @@ Troubleshooting/FAQ
 - TOC
 {:toc}
 
-## General 
+## General
 
 In general various `docker-compose` commands exist that help you troubleshoot issues you might encounter
 
@@ -23,11 +23,11 @@ In general various `docker-compose` commands exist that help you troubleshoot is
 provides a summary of the configuration including all the environment variables specified in `.env` and other environment files. It also provides feedback if the current configuration has errors
 
 ### `docker-compose logs`
-usually provides stderr and stdout of a container that can be used to troubleshoot various issues. You can append the servicename to see only the logs of a specific service use the `--tail` option to limit the output to the last `n` lines or add `-f` to follow the output of the container on the terminal. 
+usually provides stderr and stdout of a container that can be used to troubleshoot various issues. You can append the servicename to see only the logs of a specific service use the `--tail` option to limit the output to the last `n` lines or add `-f` to follow the output of the container on the terminal.
 
 **Examples:**
 ```bash
-# list the last 100 lines of the nginx service and follow ne output
+# list the last 100 lines of the nginx service and follow the output
 docker-compose logs --tail 100 -f nginx
 ```
 
@@ -35,7 +35,7 @@ docker-compose logs --tail 100 -f nginx
 you can get a shell inside a running container with `docker-compose exec`
 **Examples:**
 ```bash
-# get a shell inside the nginx container 
+# get a shell inside the nginx container
 docker-compose exec nginx sh
 
 # get a bash shell in a container that uses an entrypoint
@@ -60,7 +60,7 @@ services:
   app:
     networks:
       - proxy-net
- 
+
  networks:
   proxy-net:
     name: pmd-reverse-proxy-net
