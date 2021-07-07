@@ -17,7 +17,7 @@ Troubleshooting/FAQ
 
 ## General
 
-In general various `docker-compose` commands exist that help you troubleshoot issues you might encounter
+In general various `docker-compose` commands exist that help you troubleshoot issues you might encounter.
 
 ### `docker-compose config`
 provides a summary of the configuration including all the environment variables specified in `.env` and other environment files. It also provides feedback if the current configuration has errors
@@ -50,7 +50,7 @@ This error is typically encountered when the reverse proxy is not running or has
 
 If you prefer to start the service before configuring the reverse proxy, you can  create the network manually as specified in the error message with: `docker network create pmd-reverse-proxy-net`
 
-### 2.nginx fails to start with `nginx: [emerg] host not found in upstream`
+### 2. nginx fails to start with `nginx: [emerg] host not found in upstream`
 
 This error is typically encountered if you add an nginx configuration with a `proxy_pass` directive to a service that is either not running or not connected to the nginx network, make sure your app configuration has the network specified as follows:
 
@@ -70,3 +70,45 @@ services:
 
 also make sure the service is running using `docker-compose ps` and if not bring it up using `docker-compose up -d`.
 Once the service is running go back to the base dir of the reverse proxy and restart nginx using `docker-compose restart nginx`.
+
+### 3. Externalize Image Retrieval and Build and Reinmport to the Deployment Machine.
+
+If pulling or building your container images aborts due to failed connection
+attempts, you can try to do the same on a different machine with unrestricted
+access to the internet and import the images to the deployment machine.
+
+In case pulling is problematic, do the following.  A typical
+`docker-compose.yml` file looks like this:
+
+{% highlight yaml %}
+services:
+  hub-db:
+    image: postgres:9.5@sha256:ee604a9025ec864da512736f765ae714112a77ffc39d762c76b67ca0f8597e9e
+    container_name: jupyterhub-db
+{% endhighlight %}
+
+Spot all occurrences of `image:` therein, and do a manual pull with the
+image-name(s): 
+
+```bash
+docker pull postgres:9.5@sha256:ee604a9025ec864da512736f765ae714112a77ffc39d762c76b67ca0f8597e9e
+```
+
+Save the container image to some archive file: 
+
+```bash 
+docker save postgres:9.5@sha256:ee604... -o pgres9.5.tgz
+```
+
+The final step involves copying the output archive to the deployment machine.
+There, import the file via:
+
+```bash
+docker load <epgres9.5.tgz
+```
+
+You can do without the intermediate archive file with only one step:
+
+```bash
+docker save  postgres:9.5@sha256:ee604... | ssh user@remote.machine "docker load"
+```
