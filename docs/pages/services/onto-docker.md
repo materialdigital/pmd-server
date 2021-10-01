@@ -16,11 +16,10 @@ OntoDocker
 
 ## Description
 
-OntoDocker is a Flask application-prototype to access a Blazegraph instance via a GUI and an API.
+OntoDocker is a Flask application-prototype to access a Blazegraph and Jena instance via a GUI and an API.
 
-- Accessible at https://ontodocker.material-digital.de/
-- API authentication via JWT and OIDC.
-  - Allowed Content-Types to upload are "text/turtle" and "application/rdf+xml" as .ttl/.rdf files
+API authentication via JWT and OIDC.
+Allowed Content-Types to upload are "text/turtle" and "application/rdf+xml" as .ttl/.rdf files
 
 ## Setup
 ### Requirements
@@ -34,27 +33,28 @@ git clone https://git.material-digital.de/apps/ontodocker.git
 cd ontodocker
 ```
 
-### 2. Copy compose template
+### 2. Connect to SSO Identity Provider (IDP)
 
-```bash
-# copy (or link) the compose file template
-cp docker-compose-prod.yml docker-compose.yml
-```
+> **Note:** If you have a valid client_secrets.json already, place it in `./data/oidc/`
+{: .warning }
 
-### 3. Connect to SSO Identity Provider (IDP)
-In order to connect OntoDocker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
+In order to connect OntoDocker to the IDP you might need an initial access token (IAT), which you will receive from the maintainer of the IDP,  or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
+Save the Initial Access Token as `ia.jwt`
+
+Replace KEYCLOAK_URL, REALM_NAME in `provider_info.json` accordingly to the IDPs properties
+
+Set the APPLICATION_URL to the url where your instance is supposed to be accessible at
+
+Copy both `ia.jwt` and the customized `provider_info.json` files to `./data/oidc/`
 
 ```bash
 # Build the containers
 docker-compose build
-
-# generate the client_secrets.json for onto-docker
-docker-compose run --rm -w /app/app -v ${PWD}/flask_app/:/app ontodocker oidc-register --initial-access-token [TOKEN] https://[SSO_URL]/auth/realms/[SSO_REALM] [ONTODOCKER_URL]
 ```
 
-### 4. Start OntoDocker
-After successful configuration of the SSO you can start OntoDocker:
+### 3. Start OntoDocker
+After successful build you can start OntoDocker:
 
 ```bash
 # Start onto-docker after rebuild to ensure `client_secrets.json` is added to the image
