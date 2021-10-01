@@ -38,7 +38,7 @@ cd ontodocker
 > **Note:** If you have a valid client_secrets.json already, place it in `./data/oidc/`
 {: .warning }
 
-Otherwise in order to connect OntoDocker to the IDP you might need an initial access token (IAT) or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
+In order to connect OntoDocker to the IDP you might need an initial access token (IAT), which you will receive from the maintainer of the IDP,  or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
 Save the Initial Access Token as ```ia.jwt```
 
