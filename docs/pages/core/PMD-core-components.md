@@ -21,7 +21,7 @@ In order to establish a base configuration clone the PMD server repository and c
 ```bash
 # clone the repo and change into it
 git clone https://github.com/materialdigital/pmd-server.git
-cd pmd server
+cd pmd-server
 ```
 
 
