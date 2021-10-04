@@ -284,7 +284,7 @@ sed "s/[URL]/foo.bar.org/" data/nginx/nginx_ssl.conf.template > data/nginx/nginx
 
 Finally:
 ```bash
-# copy the proxy configuration
+# copy the proxy compose file
 cp compose-templates/docker-compose-nginx-ssl.yml docker-compose.yml
 
 # start the service
