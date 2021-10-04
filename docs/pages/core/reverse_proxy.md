@@ -275,17 +275,17 @@ following files:
 cert.pem  dhparam.pem  key.pem
 ```
 
-Then, copy the compose template by replacing occurrences of a placeholder string (`[URL]`) with your
+Then, copy the nginx configuration from the template by replacing occurrences of a placeholder string (`[URL]`) with your
  actual virtual host name, for instance, `foo.bar.org`:
 
 ```bash
-sed "s/[URL]/foo.bar.org/" compose-templates/docker-compose-nginx-ssl.yml > docker-compose.yml
+sed "s/[URL]/foo.bar.org/" data/nginx/nginx_ssl.conf.template > data/nginx/nginx_ssl.conf
 ```
 
 Finally:
 ```bash
 # copy the proxy configuration
-cp data/nginx/nginx_ssl.conf.template data/nginx/nginx_ssl.conf
+cp compose-templates/docker-compose-nginx-ssl.yml docker-compose.yml
 
 # start the service
 docker-compose up -d
