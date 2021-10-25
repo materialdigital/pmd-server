@@ -40,13 +40,13 @@ cd ontodocker
 
 In order to connect OntoDocker to the IDP you might need an initial access token (IAT), which you will receive from the maintainer of the IDP,  or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
 
-Save the Initial Access Token as `ia.jwt`
+Replace INITIAL_ACCESS_TOKEN in `provider_info.json` with the requested Initial Access Token.
 
-Replace KEYCLOAK_URL, REALM_NAME in `provider_info.json` accordingly to the IDPs properties
+Replace KEYCLOAK_URL and REALM_NAME in `provider_info.json` accordingly to the IDPs properties
 
 Set the APPLICATION_URL to the url where your instance is supposed to be accessible at
 
-Copy both `ia.jwt` and the customized `provider_info.json` files to `./data/oidc/`
+Copy the customized `provider_info.json` files to `./data/oidc/`
 
 ```bash
 # Build the containers
