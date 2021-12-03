@@ -1,11 +1,14 @@
-import json
+import json, sys
 from os.path import isfile
+
 
 def load_config(file_name):
     if isfile(file_name):
         with open(file_name) as fh:
             return json.load(fh)
-    else:
+    elif file_name == '-':
+        return json.loads(sys.stdin.read())
+    else :
         return dict()
 
 
@@ -19,7 +22,9 @@ def get_value(value):
 if __name__ == '__main__':
     config = load_config('static.json')
 
-    for env_file, entry in load_config('config.json').items():
+    filename = sys.argv[1] if len(sys.argv) > 1 else '-'
+
+    for env_file, entry in load_config(filename).items():
         if env_file in config:
             config[env_file].update(entry)
         else:
