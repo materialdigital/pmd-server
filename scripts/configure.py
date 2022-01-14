@@ -1,5 +1,15 @@
-import json, sys
+#! /usr/bin/env python3
+
+import json, sys, argparse
 from os.path import isfile
+
+# ******************************************************************************
+parser = argparse.ArgumentParser(description='Reads config.json and writes out docker-environment files.')
+
+parser.add_argument('file', nargs='?', help='optional input file, if omitted, read from stdin', default='-')
+parser.add_argument('-v', '--verbose', action='store_true', help="be verbose")
+args = parser.parse_args()
+# ******************************************************************************
 
 
 def load_config(file_name):
@@ -22,7 +32,12 @@ def get_value(value):
 if __name__ == '__main__':
     config = load_config('static.json')
 
-    filename = sys.argv[1] if len(sys.argv) > 1 else '-'
+    # prevents script from trying to read interactively from tty, only "proper" pipe allowed
+    if (args.file == '-' and sys.stdin.isatty()):
+        print ("Won't read input from tty (please use -h for help)", file=sys.stderr)
+        exit(1)
+    else:
+        filename = args.file
 
     for env_file, entry in load_config(filename).items():
         if env_file in config:
