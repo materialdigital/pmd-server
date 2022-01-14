@@ -12,7 +12,11 @@ server {
 # server {
 #     listen 443 ssl;
 #     server_name [URL];
-# 
+#
+#     add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+#     add_header X-Frame-Options DENY;
+#     add_header X-Content-Type-Options nosniff;
+#
 #     ssl_certificate /etc/letsencrypt/live/[URL]/fullchain.pem;
 #     ssl_certificate_key /etc/letsencrypt/live/[URL]/privkey.pem;
 #     include /etc/letsencrypt/options-ssl-nginx.conf;
