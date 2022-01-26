@@ -45,7 +45,7 @@ cp data/nginx/local.conf.template data/nginx/local.conf
 You should than have a `docker-compose.yml` file with the following contents:
 
 {% highlight yaml %}
-version: '3'
+version: '3.7'
 services:
   nginx:
     image: nginx:1.21-alpine
@@ -305,14 +305,14 @@ example follow the OntoDocker or pyiron section.
 Assuming the service is to be incorporated under the domain name pmd-app.mydomain.de via a `proxy_pass` to port 8000 and has this minimal compose file:
 
 {% highlight yaml %}
-version: '3.2'
+version: '3.7'
 services:
   pmd-app:
     image: pmd-app:latest
 {% endhighlight %}
 You only need to connect your service to the network of the reverse proxy by extending the compose file as follows:
 {% highlight yaml %}
-version: '3.2'
+version: '3.7'
 services:
   pmd-app:
     image: pmd-app:latest
