@@ -74,7 +74,7 @@ Make sure to to verify that custom passwords have been inserted for the database
 > **Note:** In case your python version is not >=3.5, you can also run the `configure.py`
 script within a docker container
 ```bash
-`docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py`
+`docker run --rm -v $PWD/:/tmp/ -v $PWD/../scripts/configure.py:/tmp/configure.py -w /tmp python:3-alpine python configure.py config.json`
 ```
 {: .info }
 
