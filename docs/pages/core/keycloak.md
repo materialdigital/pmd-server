@@ -80,7 +80,7 @@ script within a docker container
 
 ```bash
 # create environment files from config
-python ../scripts/configure.py
+python ../scripts/configure.py config.json
 
 # start the keycloak service
 docker-compose up -d
