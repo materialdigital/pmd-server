@@ -1,10 +1,10 @@
 ---
-title: OntoDocker
+title: ontodocker
 nav_order: 1
 parent: PMD-S Services
 ---
 
-OntoDocker
+ontodocker
 ===
 {: .no_toc }
 
@@ -16,7 +16,7 @@ OntoDocker
 
 ## Description
 
-OntoDocker is a Flask application-prototype to access a Blazegraph and Jena instance via a GUI and an API.
+ontodocker is a Flask application-prototype to access a Blazegraph and Jena Fuseki instance via a GUI and an API.
 
 API authentication via JWT and OIDC.
 Allowed Content-Types to upload are "text/turtle" and "application/rdf+xml" as .ttl/.rdf files
@@ -34,37 +34,60 @@ cd ontodocker
 ```
 
 ### 2. Connect to SSO Identity Provider (IDP)
+#### Create an environment file
+In order to connect your ontodocker to the IDP you must create a `.env` file with the folloewing contents and store it in the root folder after cloning the respository.
 
-> **Note:** If you have a valid client_secrets.json already, place it in `./data/oidc/`
-{: .warning }
+```lines=-1
+ADMIN_EMAIL=ab@c.de
+JWT_SECRET_KEY=
+JWT_DAYS_VALID=90
+FUSEKI_ADMIN_USER=admin
+FUSEKI_ADMIN_PW=admin
+KEYCLOAK_URL=
+KEYCLOAK_CLIENT_ID=
+KEYCLOAK_CLIENT_SECRET=
+```
 
-In order to connect OntoDocker to the IDP you might need an initial access token (IAT), which you will receive from the maintainer of the IDP,  or generate one, if you want to connect it to your local Instance. (see "Initial Access Token" section of the [Keycloak manual](https://www.keycloak.org/docs/latest/securing_apps/#_initial_access_token))
+Set `KEYCLOAK_URL`, `KEYCLOAK_CLIENT_ID` and `KEYCLOAK_CLIENT_SECRET` accordingly to the IDPs properties.
 
-Replace INITIAL_ACCESS_TOKEN in `provider_info.json` with the requested Initial Access Token.
+Set `JWT_SECRET_KEY` to a random alphanumeric value (for example by using `openssl rand -hex 48`).
 
-Replace KEYCLOAK_URL and REALM_NAME in `provider_info.json` accordingly to the IDPs properties
+Change the `FUSEKI_ADMIN` password here and in the `docker-compose-prod.yml` file as well.
 
-Set the APPLICATION_URL to the url where your instance is supposed to be accessible at
+Change the `ADMIN_EMAIL` and `JWT_DAYS_VALID` as desired.
 
-Copy the customized `provider_info.json` files to `./data/oidc/`
+##### docker-compose.yml
 
+If you want to use docker volumes instead of bind mounts, change it as desired in the docker-compose-prod.yml.
+
+Create a symlink in the repository's root directory via
+
+```bash
+# Create a symlink
+ln -s docker-compose-prod.yml docker-compose.yml
+```
+
+Build the container:
 ```bash
 # Build the containers
-docker-compose build
+docker compose build
 ```
 
-### 3. Start OntoDocker
-After successful build you can start OntoDocker:
+### 3. Start ontodocker
+After successful build you can start the container:
 
 ```bash
-# Start onto-docker after rebuild to ensure `client_secrets.json` is added to the image
-docker-compose up -d --build
+# Start ontodocker
+docker compose up -d
 
-# verify onto-docker and blazegraph are running properly
-docker-compose ps
+# verify ontodocker, jena fuseki and blazegraph are running properly
+docker compose ps
+
+# check the logs 
+docker compose logs -f
 ```
 
-### 5. Connect onto-docker to the reverse proxy
+### 5. Connect ontodocker to the reverse proxy
 
 > **Note:** This example assumes you chose the reverse proxy with certbot.
 {: .warning }
@@ -72,7 +95,7 @@ docker-compose ps
 #### Add nginx configuration
 
 ```bash
-# save OntoDocker URL to shell variable
+# save ontodocker URL to shell variable
 # ! Replace "ontodocker.domain.de" with the actual URL for the service
 export ONTODOCKER_URL=ontodocker.domain.de
 
@@ -80,32 +103,40 @@ export ONTODOCKER_URL=ontodocker.domain.de
 cd ..
 
 # add the nginx configuration from the template
-sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx/prod.conf > data/nginx/ontodocker.conf
+sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx_letsencrypt_prod.conf > data/nginx/ontodocker.conf
 ```
 
 #### Retrieve Let's Encrypt certificate
 
 ```bash
 
-docker-compose exec certbot certbot certonly --webroot -w /var/www/certbot -d ${ONTODOCKER_URL}
+docker compose exec certbot certbot certonly --webroot -w /var/www/certbot -d ${ONTODOCKER_URL}
 ```
 
 #### Test and load the configuration
 ```bash
 # Test the new configuration
-docker-compose exec nginx nginx -t
+docker compose exec nginx nginx -t
 
 # Reload nginx
-docker-compose exec nginx nginx -s reload
+docker compose exec nginx nginx -s reload
 ```
 
 ### 6. Test Installation
 
-Open your browser and navigate to the URL of your OntoDocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication see the OntoDocker landing page:
+Open your browser and navigate to the URL of your ontodocker installation. If the installation succeeded you should now be redirected to the SSO Login Screen and after successful authentication and clicking on a Tensile Tests Example Dataet you see the following page:
 
 ![](https://github.com/materialdigital/deployment-guide-assets/blob/main/images/ontodocker.png?raw=true)
 
 ## Usage
+
+Create new datasets by adding a Title in the corresponding "New Title" field and click "Add".
+
+Excecute SPARQL queries via the "Query" and "Update" Buttons.
+
+Destroy the Dataset permanently by clicking "Destroy".
+
+Upload RDF or TURTLE files by clicking "Upload File".
 
 Refer to [`api_usage_examples.py`](https://git.material-digital.de/apps/ontodocker/-/blob/master/api_usage_examples.py) for examples on how to use the API.
 
