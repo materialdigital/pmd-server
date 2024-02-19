@@ -16,7 +16,7 @@ ontodocker
 
 ## Description
 
-ontodocker is a Flask application to access a Blazegraph and Jena instance via a GUI and an API.
+ontodocker is a Flask application-prototype to access a Blazegraph and Jena Fuseki instance via a GUI and an API.
 
 API authentication via JWT and OIDC.
 Allowed Content-Types to upload are "text/turtle" and "application/rdf+xml" as .ttl/.rdf files
@@ -52,7 +52,7 @@ Set `KEYCLOAK_URL`, `KEYCLOAK_CLIENT_ID` and `KEYCLOAK_CLIENT_SECRET` accordingl
 
 Set `JWT_SECRET_KEY` to a random alphanumeric value (for example by using `openssl rand -hex 48`).
 
-Change the `FUSEKI_ADMIN` password it here in the `docker-compose-prod.yml` file as well.
+Change the `FUSEKI_ADMIN` password here and in the `docker-compose-prod.yml` file as well.
 
 Change the `ADMIN_EMAIL` and `JWT_DAYS_VALID` as desired.
 
@@ -103,7 +103,7 @@ export ONTODOCKER_URL=ontodocker.domain.de
 cd ..
 
 # add the nginx configuration from the template
-sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/prod.conf > data/nginx/ontodocker.conf
+sed "s/\[URL\]/${ONTODOCKER_URL}/" ontodocker/nginx_letsencrypt_prod.conf > data/nginx/ontodocker.conf
 ```
 
 #### Retrieve Let's Encrypt certificate
@@ -134,7 +134,7 @@ Create new datasets by adding a Title in the corresponding "New Title" field and
 
 Excecute SPARQL queries via the "Query" and "Update" Buttons.
 
-Destroy the Dataset permanatly by clicking "Destroy".
+Destroy the Dataset permanently by clicking "Destroy".
 
 Upload RDF or TURTLE files by clicking "Upload File".
 
