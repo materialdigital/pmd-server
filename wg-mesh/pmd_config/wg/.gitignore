@@ -1,0 +1,4 @@
+wg_key*
+*.cert
+*.key
+!cachain.cert
