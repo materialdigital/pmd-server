@@ -1,0 +1,96 @@
+networks:
+  wgnet:
+    external: true
+
+services: 
+  wg:
+    image: materialdigital/wg
+    container_name: ${WG_CONTAINER_NAME:-wg}
+    networks:
+      wgnet:
+        ipv6_address: ${SUBNET_PREFIX}ff
+    ports:
+      - 8000:8000
+      - 29292:29292
+    cap_add:
+      - NET_ADMIN
+    sysctls:                                                                                          
+      - "net.ipv6.conf.all.disable_ipv6=0"
+      - "net.ipv6.conf.all.forwarding=1"
+    volumes:
+      - ./pmd_config/wg:/pmd_config
+    environment:
+      - RUST_LOG=TRACE
+      - RUST_BACKTRACE=full
+      - WG_CONTAINER=${SUBNET_PREFIX}ff
+      - WG_ENDPOINT=${WG_ENDPOINT}
+      # Let Rocket listen to all addresses
+      - ROCKET_ADDRESS="::"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+  
+  init:
+    image: materialdigital/init
+    container_name: ${INIT_CONTAINER_NAME:-init}
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - /run/docker.sock:/run/docker.sock
+      - ./pmd_config:/pmd_config
+    environment:
+      - SVC_DNS_TTL=${SVC_DNS_TTL:-60}
+      - ZONE=${PMD_ZONE}
+      - SUBNET_PREFIX=${SUBNET_PREFIX}
+      - WG_MESH_ADDR=fd51::/16
+      - WG_CONTAINER=${SUBNET_PREFIX}ff
+      - WG_CONTAINER_NAME=${WG_CONTAINER_NAME:-wg}
+      - DNS_CONTAINER_NAME=${DNS_CONTAINER_NAME:-dns}
+      - IS_PMDC=${IS_PMDC:-false}
+    network_mode: "host"
+    pid: "host"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  dns:
+    image: materialdigital/dns
+    container_name: ${DNS_CONTAINER_NAME:-dns}
+    networks:
+      wgnet:
+        ipv6_address: ${SUBNET_PREFIX}fe
+        ipv4_address: ${IPV4_DNS_IP:-172.31.53.53}
+    sysctls:
+      - "net.ipv6.conf.all.disable_ipv6=0"
+    volumes:
+      - ./pmd_config/dns:/pmd_config
+    environment:
+      - IS_PMDC=${IS_PMDC:-false}
+      - TSIG_KEYFILE=/run/named/session.key
+      - ZONE=${PMD_ZONE}
+      - PMDC_DNS_IP=${PMDC_SUBNET_PREFIX}fe
+      - IPV4_SUBNET=${IPV4_SUBNET:-172.31.0.0/16}
+      - WG_MESH_ADDR=fd51::/16
+      - DOCKER_RESOLVER=127.0.0.11
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  app:
+    build: ../docker-images/app
+    container_name: app
+    networks:
+      wgnet:
+        ipv6_address: ${SUBNET_PREFIX}a
+    dns:
+      - ${SUBNET_PREFIX}fe
+      - ${IPV4_DNS_IP:-172.31.53.53}
+    sysctls:
+      - "net.ipv6.conf.all.disable_ipv6=0"
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    profiles:
+      - debug
