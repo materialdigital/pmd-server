@@ -66,7 +66,7 @@ cd pmd-server
 
 ## Setup
 
-### Automatic Setup using PMD Setup Vontainer
+### Automatic Setup using PMD Setup Container
 - Place the ZIP file containing your identity certificate/key files in the mesh directory (i.e. `wg-mesh`).
 - Change (`cd`) into the mesh directory.
 - *When migrating from an old setup, do `docker compose down` to stop the currently running mesh containers and remove the old Docker network via `docker network rm wgnet`.*
