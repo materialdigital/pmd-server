@@ -26,8 +26,9 @@ Wireguard-Mesh
 
 ### Request Certificate
 
-Please send your request for a PMD-S certificate via our contact form [https://material-digital.de/contact/](https://material-digital.de/contact/).
-Choose the subject "Network and security architecture".
+Please send your request for a PMD-S certificate via our contact form (login required!) [https://www.material-digital.de/contact/?subject=Netzwerk-+und+Sicherheitsarchitektur](https://www.material-digital.de/contact/?subject=Netzwerk-+und+Sicherheitsarchitektur).
+
+If the direct link above does not work, go to [https://material-digital.de/contact/](https://material-digital.de/contact/), log in and choose the subject "Network and security architecture".
 
 Your request MUST include at least the following information:
   - The public (sub)domain which points to your PMD-S' public IPv4 address
