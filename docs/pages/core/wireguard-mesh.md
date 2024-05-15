@@ -78,7 +78,7 @@ cd pmd-server
 - Place your identity certificate/key files under `pmd_config/wg/` and rename them to `participant.{cert/key}`.
 - Create the wgnet Docker network with `docker network create --ipv6 --subnet=172.31.0.0/16 --subnet=<your-wg-mesh-subnet> wgnet`, using the IPv6 subnet which has been assigned to you.
 - Create/edit the `.env` file, and adapt `WG_ENDPOINT`, `SUBNET_PREFIX` and `PMD_ZONE` to the values which have been assigned to you. You should normally not alter the `PMDC_SUBNET_PREFIX` variable.
-- *In case subnet `172.31.0.0/16` has not been avialable, you also have to specify `IPV4_DNS_IP` (IPv4 IP of DNS service) and `IPV4_SUBNET` (IPv4 subnet of `wgnet` in CIDR notation).*
+- *In case subnet `172.31.0.0/16` has not been available, you also have to specify `IPV4_DNS_IP` (IPv4 IP of DNS service) and `IPV4_SUBNET` (IPv4 subnet of `wgnet` in CIDR notation).*
 
 ## Usage
 
