@@ -90,7 +90,7 @@ If you also want to start a demo app container for testing, run `docker compose 
 
 ### Adding Services (Docker Containers) to the Mesh
 
-In order to attend in the PMD mesh, containers have to fulfill a few requirements:
+In order to join the PMD mesh, containers have to fulfill a few requirements:
 - IPv6 has to be enabled, typically via `--sysctl net.ipv6.conf.all.disable_ipv6=0` or in `compose.yml` files via the `sysctl` section.
 - In order to resolve PMD mesh domains, the local PMD DNS server has to be specified. This can be done in `compose.yml` files via the `dns` section of the service, or via the `--dns` switch when using the docker CLI. It is recommended to specify both the IPv4 (normally `172.31.53.53`) and IPv6 (normally `<your-wg-mesh-subnet-prefix>::fe`) address. (You should find your IPv6 prefix in your `.env` file after a successful setup.)
 
