@@ -21,8 +21,8 @@ While the architecture of the PMD-mesh is still work in progress, core functiona
 * A Linux x86-64 system (bare metal or virtualised) with at least 2 CPU Cores allocated
 * At least 1GB of available disk space with additional space for applications
 * Admin (root) privileges
-* [Docker Runtime](https://docs.docker.com/engine/install/) >= 19.03.13
-* [Docker compose](https://docs.docker.com/compose/install/) >= 1.27.41
+* [Docker Runtime](https://docs.docker.com/engine/install/) >= 24.x
+* [Docker Compose CLI Plugin](https://docs.docker.com/compose/install/) >= 2.x
 * [Git](https://git-scm.com)
 * RAM >= 4 GB
 * Activated Container support in the Kernel must be available
