@@ -94,7 +94,7 @@ In order to join the PMD mesh, containers have to fulfill a few requirements:
 - IPv6 has to be enabled, typically via `--sysctl net.ipv6.conf.all.disable_ipv6=0` or in `compose.yml` files via the `sysctl` section.
 - In order to resolve PMD mesh domains, the local PMD DNS server has to be specified. This can be done in `compose.yml` files via the `dns` section of the service, or via the `--dns` switch when using the docker CLI. It is recommended to specify both the IPv4 (normally `172.31.53.53`) and IPv6 (normally `<your-wg-mesh-subnet-prefix>::fe`) address. (You should find your IPv6 prefix in your `.env` file after a successful setup.)
 
-For an docker compose service definition example, see the `app` service in the `compose.yml` of this setup.
+For a docker compose service definition example, see the `app` service in the `compose.yml` of this setup.
 
 When all requirements are met, containers can be added to the mesh in these two ways:
 - Using the docker compose CLI plugin, you can leverage the example `app` service (see `compose.yml`) as a template, add the external `wgnet` network to your `networks` section and the service in your `compose.yml`, and start added/modified services via `docker compose up -d`.
