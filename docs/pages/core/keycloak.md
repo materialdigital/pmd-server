@@ -42,30 +42,34 @@ cd keycloak
 After copying the templates you should view and if necessary adjust the configuration (`config.json`):
 {% highlight json %}
 {
-  "shared": {
-    "db_password": "[db password]",
-    "db_name": "keycloak",
-    "db_user": "keycloak"
+    "shared" : {
+        "db_password"             : "[db password]",
+        "db_name"                 : "keycloak",
+        "db_user"                 : "keycloak",
+        "db_host"                 : "keycloak-db"
   },
-  "keycloak.env": {
-    "DB_VENDOR": "POSTGRES",
-    "DB_ADDR": "keycloak-db",
-    "DB_DATABASE": "shared:db_name",
-    "DB_USER": "shared:db_user",
-    "DB_SCHEMA": "public",
-    "DB_PASSWORD": "shared:db_password",
-    "KEYCLOAK_USER": "admin",
-    "KEYCLOAK_PASSWORD": "[password]"
-  },
-  "keycloak_db.env": {
-    "POSTGRES_DB": "shared:db_name",
-    "POSTGRES_USER": "shared:db_user",
-    "POSTGRES_PASSWORD": "shared:db_password"
-  }
+    "keycloak.env" : {
+        "KEYCLOAK_ADMIN_PASSWORD" : "[password]",
+        "KEYCLOAK_ADMIN"          : "admin",
+        "KC_DB"                   : "postgres",
+        "KC_DB_URL_HOST"          : "shared:db_host",
+        "KC_DB_URL_DATABASE"      : "shared:db_name",
+        "KC_DB_USERNAME"          : "shared:db_user",
+        "KC_DB_PASSWORD"          : "shared:db_password",
+        "KC_HOSTNAME"             : "[hostname]"
+    },
+    "keycloak_db.env" : {
+        "POSTGRES_DB"             : "shared:db_name",
+        "POSTGRES_USER"           : "shared:db_user",
+        "POSTGRES_PASSWORD"       : "shared:db_password"
+    }
 }
 {% endhighlight %}
 
-Make sure to to verify that custom passwords have been inserted for the database and the Keycloak admin user (`[db password]` and `[password]`) before you continue and start the service.
+Make sure to verify that custom passwords for the database (`[db password]`) and
+the Keycloak admin user (`[password]`) and the hostname through which the
+service shall be reachable (`[hostname]`) are filled in before you continue and
+start the service.
 
 ### 3. Start the service
 
