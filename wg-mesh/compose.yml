@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
 
   app:
-    build: ../docker-images/app
+    build: ../../docker-images/app
     container_name: app
     networks:
       wgnet:
