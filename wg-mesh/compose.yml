@@ -79,7 +79,7 @@ services:
     restart: unless-stopped
 
   app:
-    build: ../../docker-images/app
+    image: materialdigital/demo-app
     container_name: app
     networks:
       wgnet:
@@ -89,6 +89,8 @@ services:
       - ${IPV4_DNS_IP:-172.31.53.53}
     sysctls:
       - "net.ipv6.conf.all.disable_ipv6=0"
+    environment:
+      - APP_DOMAIN=app.${PMD_ZONE}
     tty: true
     stdin_open: true
     restart: unless-stopped
