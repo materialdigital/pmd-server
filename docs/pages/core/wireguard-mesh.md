@@ -71,11 +71,11 @@ cd pmd-server
 - Place the ZIP file containing your identity certificate/key files in the mesh directory (i.e. `wg-mesh`).
 - Change (`cd`) into the mesh directory.
 - *When migrating from an old setup, do `docker compose down` to stop the currently running mesh containers and remove the old Docker network via `docker network rm wgnet`.*
-- Run `docker run --rm --pull always -v $(pwd):/composer_root -v /run/docker.sock:/run/docker.sock materialdigital/setup` from within this directory.
+- Run `docker run --rm --pull always -v $(pwd):/composer_root -v /run/docker.sock:/run/docker.sock -e IEK=<your-iek-uuid> materialdigital/setup` from within this directory.
 - Check the output for setup warnings and resolve them accordingly.
 
 ### Manual Setup (NOT Recommended!)
-- Place your identity certificate/key files under `pmd_config/wg/` and rename them to `participant.{cert/key}`.
+- Obtain your identity certificate/key files from https://daps.material-digital.de, place them under `pmd_config/wg/` and name them `participant.{crt/key}`. Make sure that `participant.crt` contains the full chain (cert, sub-ca and ca, in that order). Additionally, place the root certificate in `pmd_config/wg/root.crt`.
 - Create the wgnet Docker network with `docker network create --ipv6 --subnet=172.31.0.0/16 --subnet=<your-wg-mesh-subnet> wgnet`, using the IPv6 subnet which has been assigned to you.
 - Create/edit the `.env` file, and adapt `WG_ENDPOINT`, `SUBNET_PREFIX` and `PMD_ZONE` to the values which have been assigned to you. You should normally not alter the `PMDC_SUBNET_PREFIX` variable.
 - *In case subnet `172.31.0.0/16` has not been available, you also have to specify `IPV4_DNS_IP` (IPv4 IP of DNS service) and `IPV4_SUBNET` (IPv4 subnet of `wgnet` in CIDR notation).*

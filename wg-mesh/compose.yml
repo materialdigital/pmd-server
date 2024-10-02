@@ -49,6 +49,7 @@ services:
       - WG_CONTAINER_NAME=${WG_CONTAINER_NAME:-wg}
       - DNS_CONTAINER_NAME=${DNS_CONTAINER_NAME:-dns}
       - IS_PMDC=${IS_PMDC:-false}
+      - CA_FP=${CA_FP}
     network_mode: "host"
     pid: "host"
     tty: true
