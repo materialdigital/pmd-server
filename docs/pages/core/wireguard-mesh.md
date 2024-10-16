@@ -68,11 +68,43 @@ cd pmd-server
 ## Setup
 
 ### Automatic Setup using PMD Setup Container
-- Place the ZIP file containing your identity certificate/key files in the mesh directory (i.e. `wg-mesh`).
-- Change (`cd`) into the mesh directory.
+- Change (`cd`) into the mesh directory (i.e. `wg-mesh`).
 - *When migrating from an old setup, do `docker compose down` to stop the currently running mesh containers and remove the old Docker network via `docker network rm wgnet`.*
 - Run `docker run --rm --pull always -v $(pwd):/composer_root -v /run/docker.sock:/run/docker.sock -e IEK=<your-iek-uuid> materialdigital/setup` from within this directory.
 - Check the output for setup warnings and resolve them accordingly.
+
+<details>
+<summary>Example result</summary>
+
+```
+Status: Downloaded newer image for materialdigital/setup:latest
+Performing initial enrollment via EST...
+Establish trust into PMD CA...
+The CA fingerprint was successfully checked, trust anchor has been established.
+Generating private key and certificate signing request (CSR)...
+-----
+Performing EST enrollment request...
+Certificate acquired, enrollment successful!
+Executing configuration script...
+DEBUG - Client Assertion Payload: {"iss":"...", ...,"aud":"https://daps.material-digital.de"}
+DEBUG - Client Assertion (encoded): ...
+DEBUG - Access Token: ...
+Retrieving OpenID Config from https://daps.material-digital.de/.well-known/openid-configuration...
+Retrieving JWKS from https://daps.material-digital.de/jwks.json...
+
+### THIS IS YOUR PMD CONFIGURATION: ###
+PMDC_SUBNET_PREFIX=xxxx:x:x:x::
+WG_ENDPOINT=pmd-s.open-semantic-lab.org:29292
+SUBNET_PREFIX=xxxx:x:x:x::
+PMD_ZONE=xxx.pmd.internal
+CA_FP=xxx
+
+Sourcing newly created .env file...
+
+Setting up docker network for PMD mesh...
+PMD mesh Docker network created with ID "xxx"
+```
+</details>
 
 ### Manual Setup (NOT Recommended!)
 - Obtain your identity certificate/key files from https://daps.material-digital.de, place them under `pmd_config/wg/` and name them `participant.{crt/key}`. Make sure that `participant.crt` contains the full chain (cert, sub-ca and ca, in that order). Additionally, place the root certificate in `pmd_config/wg/root.crt`.
@@ -87,6 +119,43 @@ When properly set up, you should be able to start your mesh via `docker compose 
 
 If you also want to start a demo app container for testing, run `docker compose --profile debug up -d`.
 (This requires that you launch the commands from the PMD mesh git repository with the corresponding `Dockerfile`.)
+
+Run `curl http://localhost:8000/connect/<DOMAIN>/<PORT>` on the host (assuming the wireguard container `materialdigital/wg` has exposed port 8000) to connect to another mesh participant.
+<details>
+<summary>Example result</summary>
+  
+```
+peer: WireGuardPeerConfig { endpoint: "<DOMAIN>:<PORT>", subnet: "xxxx:x:x:x::/xx", pub_key: "xxx" }, dat: ...
+```
+</details>
+
+Run `wg` within the wireguard container (`materialdigital/wg`) to list all active connections. 
+<details>
+<summary>Example result</summary>
+  
+```
+interface: wg0
+  public key: xxx/xxx
+  private key: (hidden)
+  listening port: xxxxx
+
+peer: XXX (e.g. PMD-C)
+  endpoint: xxx.xxx.xxx.xxx:xxxxx
+  allowed ips: xxxx:x:x:x::/xx
+  latest handshake: 1 minute, 21 seconds ago
+  transfer: 8.16 KiB received, 8.23 KiB sent
+  persistent keepalive: every 25 seconds
+
+peer: XXX (e.g. another institute)
+  endpoint: xxx.xxx.xxx.xxx:xxxxx
+  allowed ips: xxxx:x:x:x::/xx
+  latest handshake: 1 minute, 30 seconds ago
+  transfer: 220 B received, 180 B sent
+  persistent keepalive: every 25 seconds
+```
+</details>
+
+To test the connection the an exposed service of another participant run, e.g. within your app container, `ping <APP-NAME>.<PARTICIPANT>.pmd.internal` .
 
 ### Adding Services (Docker Containers) to the Mesh
 
