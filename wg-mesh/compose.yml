@@ -10,8 +10,7 @@ services:
       wgnet:
         ipv6_address: ${SUBNET_PREFIX}ff
     ports:
-      - 8000:8000
-      - 29292:29292
+      - "29292:29292"
     cap_add:
       - NET_ADMIN
     sysctls:                                                                                          
@@ -20,12 +19,16 @@ services:
     volumes:
       - ./pmd_config/wg:/pmd_config
     environment:
+      - TZ=${TZ:-Europe/Berlin}
       - RUST_LOG=TRACE
       - RUST_BACKTRACE=full
       - WG_CONTAINER=${SUBNET_PREFIX}ff
       - WG_ENDPOINT=${WG_ENDPOINT}
       # Let Rocket listen to all addresses
-      - ROCKET_ADDRESS="::"
+      - ROCKET_ADDRESS="unix:/pmd_config/daemon.sock"
+    labels:
+      # Not to be accessed from other mesh participants
+      de.material-digital.mesh-connectivity: private
     tty: true
     stdin_open: true
     restart: unless-stopped
@@ -41,6 +44,7 @@ services:
       - /run/docker.sock:/run/docker.sock
       - ./pmd_config:/pmd_config
     environment:
+      - TZ=${TZ:-Europe/Berlin}
       - SVC_DNS_TTL=${SVC_DNS_TTL:-60}
       - ZONE=${PMD_ZONE}
       - SUBNET_PREFIX=${SUBNET_PREFIX}
@@ -68,6 +72,7 @@ services:
     volumes:
       - ./pmd_config/dns:/pmd_config
     environment:
+      - TZ=${TZ:-Europe/Berlin}
       - IS_PMDC=${IS_PMDC:-false}
       - TSIG_KEYFILE=/run/named/session.key
       - ZONE=${PMD_ZONE}
