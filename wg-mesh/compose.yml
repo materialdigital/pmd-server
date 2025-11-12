@@ -24,8 +24,6 @@ services:
       - RUST_BACKTRACE=full
       - WG_CONTAINER=${SUBNET_PREFIX}ff
       - WG_ENDPOINT=${WG_ENDPOINT}
-      # Let Rocket listen to all addresses
-      - ROCKET_ADDRESS="unix:/pmd_config/daemon.sock"
     labels:
       # Not to be accessed from other mesh participants
       de.material-digital.mesh-connectivity: private
